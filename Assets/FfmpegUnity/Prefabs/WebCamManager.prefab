@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2944136686475524186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2944136686475524191}
+  - component: {fileID: 2944136686475524188}
+  - component: {fileID: 2944136686475524189}
+  m_Layer: 0
+  m_Name: WebCamManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2944136686475524191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944136686475524186}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 889.84033, y: 892.7826, z: -3.8731053}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2944136686475524188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944136686475524186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 341d8b907c3fbab4e8b3e47d4169fb8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sourceMode: 0
+  _webCamStream: {fileID: 2944136686475524189}
+  _renderMode: 2
+  _targetTexture: {fileID: 8400000, guid: d18de05554d91b7428781281306b7f82, type: 2}
+  _targetRenderer: {fileID: 0}
+  _playOnAwake: 1
+--- !u!114 &2944136686475524189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944136686475524186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68057041e3922f044829b40e55672145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deviceMode: 0
+  _deviceName: 
+  _deviceIndex: 0
+  _resolutionMode: 1
+  _requestedWidth: 1080
+  _requestedHeight: 1920
+  _fpsMode: 0
+  _requestedFPS: 60
+  _playOnAwake: 1
