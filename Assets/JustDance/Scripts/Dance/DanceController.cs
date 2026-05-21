@@ -2,10 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
 /// <summary>
 /// Controlador principal do gameplay de dança.
-/// Orquestra: música → passos → avaliação Kinect → pontuação → gravação.
+/// Suporta 1 ou 2 jogadores — lê GameSession.PlayerCount no início de cada partida.
 /// </summary>
 public class DanceController : MonoBehaviour
 {
@@ -16,45 +15,46 @@ public class DanceController : MonoBehaviour
 
     [Header("Referências")]
     public UnityEngine.AudioSource musicSource;
-    public SkeletonVisualizer skeletonVisualizer;
-    public ScoreManager scoreManager;
-    public DanceHUD hud;
-    public DanceVideoRecorder videoRecorder;
+    public SkeletonVisualizer       skeletonVisualizer;
+    public DanceHUD                 hud;
+    public DanceVideoRecorder       videoRecorder;
+
+    [Header("Pontuação — um ScoreManager por jogador (máx 2)")]
+    public ScoreManager[] scoreManagers = new ScoreManager[2];
 
     [Header("Configuração")]
-    [Tooltip("Quantas vezes por segundo avalia a pose do jogador")]
+    [Tooltip("Avaliações de pose por segundo")]
     public float evaluationRate = 10f;
 
     // Estado interno
     private float _musicTime;
-    private float _gameTimer;       // timer próprio usado quando não há AudioClip
-    private bool _hasClip;
-    private bool _isPlaying;
-    private DanceChoreography.StepEntry _currentEntry;
+    private float _gameTimer;
+    private bool  _hasClip;
+    private bool  _isPlaying;
+    private DanceChoreography.StepEntry                     _currentEntry;
     private Dictionary<KinectBodyTracker.JointId, Vector3> _referenceJoints;
     private float _nextEvalTime;
-    private float _stepBestScore;
+    private float[] _stepBestScore = new float[2];
 
-    // Propriedades públicas para StepPreviewLane e outros sistemas
-    public float              MusicTime   => _musicTime;
-    public DanceChoreography  Choreography => choreography;
-    public bool               IsPlaying    => _isPlaying;
+    public float             MusicTime    => _musicTime;
+    public DanceChoreography Choreography => choreography;
+    public bool              IsPlaying    => _isPlaying;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
-    /// <summary>Inicia a partida. Chamar do menu ou botão.</summary>
     public void StartDance()
     {
+        if (GameSession.SelectedChoreography != null)
+            choreography = GameSession.SelectedChoreography;
         if (choreography == null) { Debug.LogError("Coreografia não definida!"); return; }
         StartCoroutine(DanceRoutine());
     }
 
     IEnumerator DanceRoutine()
     {
-        // 1. Aguardar Kinect estar pronto
+        int players = GameSession.PlayerCount;
+
+        // 1. Aguardar Kinect
         float waitTimer = 0f;
         while (!KinectBodyTracker.Instance.IsConnected && waitTimer < 5f)
         {
@@ -63,7 +63,13 @@ public class DanceController : MonoBehaviour
             yield return null;
         }
 
-        // 2. Countdown
+        // 2. Preparar HUD e scores
+        hud?.SetupForPlayerCount(players);
+        for (int p = 0; p < players && p < scoreManagers.Length; p++)
+            scoreManagers[p]?.ResetScore();
+        for (int p = 0; p < 2; p++) _stepBestScore[p] = 0f;
+
+        // 3. Countdown
         hud?.ShowMessage("Prepare-se!");
         videoRecorder?.StartRecording();
         for (int i = 3; i >= 1; i--)
@@ -73,8 +79,8 @@ public class DanceController : MonoBehaviour
         }
         hud?.HideCountdown();
 
-        // 3. Tocar música (opcional — sem clip usa timer interno)
-        _hasClip = choreography.musicClip != null;
+        // 4. Música
+        _hasClip   = choreography.musicClip != null;
         _gameTimer = 0f;
         if (_hasClip)
         {
@@ -82,109 +88,109 @@ public class DanceController : MonoBehaviour
             musicSource.Play();
         }
         _isPlaying = true;
-        scoreManager?.ResetScore();
         hud?.HideMessage();
 
-        // 4. Loop de gameplay
+        // 5. Loop de gameplay
         while (_isPlaying)
         {
-            // Tempo: AudioSource.time quando há música, Time.deltaTime quando não há
-            if (_hasClip)
-                _musicTime = musicSource.time;
-            else
-            {
-                _gameTimer += Time.deltaTime;
-                _musicTime = _gameTimer;
-            }
+            _musicTime = _hasClip ? musicSource.time : (_gameTimer += Time.deltaTime);
 
-            // Verificar fim
             if (_musicTime >= choreography.TotalDuration)
             {
                 _isPlaying = false;
                 break;
             }
 
-            // Buscar passo ativo
-            var activeEntry = choreography.GetActiveStep(_musicTime);
+            // stepTime desconta o offset do primeiro beat (silêncio/intro da música)
+            float stepTime = _musicTime - choreography.firstBeatOffset;
+
+            var activeEntry = choreography.GetActiveStep(stepTime);
 
             if (activeEntry != null && activeEntry != _currentEntry)
             {
-                // Novo passo começou
-                _currentEntry = activeEntry;
+                _currentEntry    = activeEntry;
                 _referenceJoints = activeEntry.step?.ToDictionary();
-                _stepBestScore = 0f;
+                for (int p = 0; p < 2; p++) _stepBestScore[p] = 0f;
                 skeletonVisualizer?.SetReferenceJoints(_referenceJoints);
                 hud?.ShowStep(activeEntry.step);
             }
             else if (activeEntry == null && _currentEntry != null)
             {
-                // Passo terminou: registrar melhor score
                 FinalizeCurrentStep();
-                _currentEntry = null;
+                _currentEntry    = null;
                 _referenceJoints = null;
                 skeletonVisualizer?.SetReferenceJoints(null);
             }
 
-            // Avaliar pose periodicamente
             if (_currentEntry != null && Time.time >= _nextEvalTime)
             {
                 _nextEvalTime = Time.time + (1f / evaluationRate);
                 EvaluatePose();
             }
 
-            // Mostrar próximo passo no HUD
-            var upcoming = choreography.GetUpcomingStep(_musicTime);
-            hud?.ShowUpcoming(upcoming?.step);
-
+            hud?.ShowUpcoming(choreography.GetUpcomingStep(stepTime)?.step);
             yield return null;
         }
 
-        // Finaliza o passo que ainda estava ativo quando o loop terminou
         if (_currentEntry != null)
         {
             FinalizeCurrentStep();
             _currentEntry = null;
         }
 
-        // 5. Fim da dança
+        // 6. Fim
         yield return new WaitForSeconds(1f);
-        musicSource.Stop();
+        musicSource?.Stop();
         videoRecorder?.StopRecording();
-        Debug.Log($"[DanceController] Fim. Score={scoreManager?.TotalScore}  Perfect={scoreManager?.PerfectCount}  Great={scoreManager?.GreatCount}  Miss={scoreManager?.MissCount}");
-        hud?.ShowResults(scoreManager.TotalScore, scoreManager.MaxPossibleScore);
+
+        for (int p = 0; p < players && p < scoreManagers.Length; p++)
+        {
+            var sm = scoreManagers[p];
+            Debug.Log($"[DanceController] J{p + 1}: Score={sm?.TotalScore}  Perfect={sm?.PerfectCount}  Great={sm?.GreatCount}  Miss={sm?.MissCount}");
+        }
+
+        hud?.ShowResults(scoreManagers);
     }
 
     void EvaluatePose()
     {
         if (_referenceJoints == null) return;
 
-        var playerJoints = KinectBodyTracker.Instance?.GetNormalizedJoints();
-        if (playerJoints == null)
+        int players = GameSession.PlayerCount;
+        for (int p = 0; p < players && p < scoreManagers.Length; p++)
         {
-            Debug.LogWarning("[DanceController] EvaluatePose: KinectBodyTracker não tem joints — Kinect está rastreando o jogador?");
-            return;
-        }
+            var joints = KinectBodyTracker.Instance?.GetNormalizedJoints(p);
+            if (joints == null)
+            {
+                Debug.LogWarning($"[DanceController] J{p + 1}: nenhum joint — Kinect rastreando?");
+                continue;
+            }
 
-        float score = PoseComparator.Compare(playerJoints, _referenceJoints,
-                                              _currentEntry.step?.tolerance ?? 0.25f);
+            float score = PoseComparator.Compare(joints, _referenceJoints,
+                                                  _currentEntry.step?.tolerance ?? 0.25f);
 
-        Debug.Log($"[DanceController] Pose '{_currentEntry.step?.stepName}' — score: {score:F2}  joints do jogador: {playerJoints.Count}  refs: {_referenceJoints.Count}");
+            Debug.Log($"[DanceController] J{p + 1} '{_currentEntry.step?.stepName}' score={score:F2}");
 
-        if (score > _stepBestScore)
-        {
-            _stepBestScore = score;
-            hud?.ShowLiveScore(score, PoseComparator.GetRating(score));
+            if (score > _stepBestScore[p])
+            {
+                _stepBestScore[p] = score;
+                hud?.ShowLiveScore(score, PoseComparator.GetRating(score), p);
+            }
         }
     }
 
     void FinalizeCurrentStep()
     {
-        ScoreRating rating = PoseComparator.GetRating(_stepBestScore);
-        int points = RatingToPoints(rating);
-        Debug.Log($"[DanceController] Finalizado '{_currentEntry.step?.stepName}': bestScore={_stepBestScore:F2}  rating={rating}  pontos={points}");
-        scoreManager?.AddScore(points, rating);
-        hud?.UpdateScore(scoreManager?.TotalScore ?? 0);
-        hud?.ShowRatingPopup(rating);
+        int players = GameSession.PlayerCount;
+        for (int p = 0; p < players && p < scoreManagers.Length; p++)
+        {
+            ScoreRating rating = PoseComparator.GetRating(_stepBestScore[p]);
+            int points = RatingToPoints(rating);
+            Debug.Log($"[DanceController] J{p + 1} '{_currentEntry.step?.stepName}': best={_stepBestScore[p]:F2}  rating={rating}  pts={points}");
+            scoreManagers[p]?.AddScore(points, rating);
+            hud?.UpdateScore(scoreManagers[p]?.TotalScore ?? 0, p);
+            hud?.ShowRatingPopup(rating, p);
+        }
     }
 
     private int RatingToPoints(ScoreRating r) => r switch

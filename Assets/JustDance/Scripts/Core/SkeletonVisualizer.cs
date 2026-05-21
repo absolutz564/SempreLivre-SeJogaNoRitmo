@@ -10,8 +10,8 @@ public class SkeletonVisualizer : MonoBehaviour
 {
     [Header("Visual")]
     public Material boneMaterial;
-    public Color playerColor    = Color.cyan;
-    public Color referenceColor = Color.yellow;
+    public Color[] playerColors  = { Color.cyan, new Color(1f, 0.4f, 0f) }; // P1 ciano, P2 laranja
+    public Color referenceColor  = Color.yellow;
 
     [Header("Projeção")]
     public Camera kinectProjectionCamera;
@@ -36,19 +36,29 @@ public class SkeletonVisualizer : MonoBehaviour
         (JointId.SpineShoulder,JointId.Head),
     };
 
-    private Dictionary<JointId, Vector3> _playerJoints;
+    private readonly Dictionary<JointId, Vector3>[] _playerJoints = new Dictionary<JointId, Vector3>[2];
     private Dictionary<JointId, Vector3> _referenceJoints;
 
     public void SetReferenceJoints(Dictionary<JointId, Vector3> joints) => _referenceJoints = joints;
 
-    void Update() => _playerJoints = KinectBodyTracker.Instance?.GetNormalizedJoints();
+    void Update()
+    {
+        int count = GameSession.PlayerCount;
+        for (int i = 0; i < _playerJoints.Length; i++)
+            _playerJoints[i] = i < count ? KinectBodyTracker.Instance?.GetNormalizedJoints(i) : null;
+    }
 
     void OnRenderObject()
     {
         if (boneMaterial == null) return;
         boneMaterial.SetPass(0);
         if (_referenceJoints != null) DrawSkeleton(_referenceJoints, referenceColor, ghost: true);
-        if (_playerJoints    != null) DrawSkeleton(_playerJoints,    playerColor,    ghost: false);
+        for (int i = 0; i < _playerJoints.Length; i++)
+        {
+            if (_playerJoints[i] == null) continue;
+            Color c = i < playerColors.Length ? playerColors[i] : Color.cyan;
+            DrawSkeleton(_playerJoints[i], c, ghost: false);
+        }
     }
 
     void DrawSkeleton(Dictionary<JointId, Vector3> joints, Color color, bool ghost)

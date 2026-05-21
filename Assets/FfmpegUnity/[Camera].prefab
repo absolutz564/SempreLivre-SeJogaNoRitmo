@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4181954941899628924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 224629704556244908}
+  - component: {fileID: 4766101001793378466}
+  - component: {fileID: 303570690130386634}
+  m_Layer: 0
+  m_Name: '[Camera]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &224629704556244908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4181954941899628924}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4766101001793378466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4181954941899628924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 341d8b907c3fbab4e8b3e47d4169fb8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  correctionMaterial: {fileID: 2100000, guid: 7848975380411044bb284aa0610eda87, type: 2}
+  _sourceMode: 0
+  _webCamStream: {fileID: 303570690130386634}
+  _renderMode: 2
+  _targetTexture: {fileID: 8400000, guid: 4dfbbd94930b23f419aa10d72c5445c8, type: 2}
+  _targetRenderer: {fileID: 0}
+  _playOnAwake: 1
+--- !u!114 &303570690130386634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4181954941899628924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68057041e3922f044829b40e55672145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deviceMode: 0
+  _deviceName: 
+  _deviceIndex: 0
+  _resolutionMode: 1
+  _requestedWidth: 1920
+  _requestedHeight: 1080
+  _fpsMode: 0
+  _requestedFPS: 30
+  _playOnAwake: 1

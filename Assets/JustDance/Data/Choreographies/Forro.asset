@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f223d0ee7ac704db5333dad7610eea, type: 3}
+  m_Name: Forro
+  m_EditorClassIdentifier: 
+  songTitle: "Forr\xF3"
+  artist: JustDance Dev
+  musicClip: {fileID: 8300000, guid: c4c01c46162fdd54e882c1b7e41251db, type: 3}
+  coverArt: {fileID: 0}
+  bpm: 120
+  firstBeatOffset: 0
+  steps:
+  - step: {fileID: 11400000, guid: e5d29d7238687d343b434ccc488e79c0, type: 2}
+    startTime: 2.4
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: a2df2b653b65bf542921eb542c6e0172, type: 2}
+    startTime: 3.4
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: cca956b513384d349bd7a84075fcb1aa, type: 2}
+    startTime: 7
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 350b990d3c076904398a09018b5ec0b5, type: 2}
+    startTime: 8.5
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: a6ac310eeef4c324d9b368cb6369ccb8, type: 2}
+    startTime: 9.5
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 02f654f9ce514aa4e8e458c16f1672fb, type: 2}
+    startTime: 12
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 2b5394b58e8561a42ba1c3cd3d3210db, type: 2}
+    startTime: 15
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 9641ff2ecdc5277419af7985f0cf5016, type: 2}
+    startTime: 20
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: a840eee1193c7a04499fda333d694322, type: 2}
+    startTime: 28
+    windowBefore: 0.8
+    windowAfter: 0.3

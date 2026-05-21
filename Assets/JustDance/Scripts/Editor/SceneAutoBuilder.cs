@@ -37,7 +37,6 @@ public static class SceneAutoBuilder
         var systemGO = new GameObject("[System]");
         systemGO.AddComponent<KinectManager>();
         systemGO.AddComponent<KinectBodyTracker>();
-        var scoreManager = systemGO.AddComponent<ScoreManager>();
 
         // ── [Camera] – Insta360 ───────────────────────────────────────────────
         var cameraCapGO = new GameObject("[Camera]");
@@ -58,10 +57,13 @@ public static class SceneAutoBuilder
 
         recorder.uploader = uploader;
 
-        danceCtrl.musicSource       = audioSrc;
-        danceCtrl.scoreManager      = scoreManager;
+        danceCtrl.musicSource        = audioSrc;
         danceCtrl.skeletonVisualizer = skelVis;
-        danceCtrl.videoRecorder     = recorder;
+        danceCtrl.videoRecorder      = recorder;
+        var sm0 = gameGO.AddComponent<ScoreManager>();
+        var sm1 = gameGO.AddComponent<ScoreManager>();
+        danceCtrl.scoreManagers[0] = sm0;
+        danceCtrl.scoreManagers[1] = sm1;
 
         // ── Canvas ────────────────────────────────────────────────────────────
         var canvasGO = new GameObject("Canvas");
@@ -85,31 +87,6 @@ public static class SceneAutoBuilder
 
         danceCtrl.hud = hud;
 
-        // Score (topo esquerdo)
-        var scorePanel = NewUIObject("ScorePanel", hudGO,
-            new Vector2(0,1), new Vector2(0,1), new Vector2(20,-20), new Vector2(320, 60));
-        hud.scoreText = MakeTMP(scorePanel, "ScoreText", "0", 48, TextAlignmentOptions.Left, Color.white, FontStyles.Bold);
-
-        // Barra de aderência de pose (base)
-        var sliderGO = NewUIObject("LivePoseBar", hudGO,
-            new Vector2(0.15f,0), new Vector2(0.85f,0), new Vector2(0,30), new Vector2(0,28));
-        var slider = sliderGO.AddComponent<Slider>();
-        var sliderBg = NewUIObject("Background", sliderGO, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
-        var sliderBgImg = sliderBg.AddComponent<Image>();
-        sliderBgImg.color = new Color(0.2f,0.2f,0.2f,0.7f);
-        var fillArea = NewUIObject("Fill Area", sliderGO, Vector2.zero, Vector2.one, new Vector2(5,0), new Vector2(-10,0));
-        var fill = NewUIObject("Fill", fillArea, Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
-        var fillImg = fill.AddComponent<Image>();
-        fillImg.color = new Color(0.2f, 0.9f, 0.3f);
-        var fillRect = fill.GetComponent<RectTransform>();
-        fillRect.anchorMin = Vector2.zero;
-        fillRect.anchorMax = new Vector2(0,1);
-        fillRect.sizeDelta = Vector2.zero;
-        slider.fillRect        = fillRect;
-        slider.targetGraphic   = fillImg;
-        slider.minValue = 0; slider.maxValue = 1;
-        hud.livePoseSlider = slider;
-
         // Ícone passo atual (base esquerda)
         var curStepGO  = NewUIObject("CurrentStepPanel", hudGO,
             new Vector2(0,0), new Vector2(0,0), new Vector2(70,80), new Vector2(120,120));
@@ -125,14 +102,6 @@ public static class SceneAutoBuilder
         nextStepImg.color = new Color(1,1,1,0.45f);
         hud.upcomingStepImage = nextStepImg;
         hud.upcomingLabel = MakeTMP(nextStepGO, "UpcomingLabel", "A SEGUIR", 18, TextAlignmentOptions.Center, Color.white);
-
-        // Rating popup (centro)
-        var ratingGO  = NewUIObject("RatingPopup", hudGO,
-            new Vector2(0.5f,0.55f), new Vector2(0.5f,0.55f), Vector2.zero, new Vector2(500,90));
-        var ratingTMP = MakeTMP(ratingGO, "RatingText", "PERFECT", 72, TextAlignmentOptions.Center,
-            new Color(1f,0.82f,0f), FontStyles.Bold);
-        ratingTMP.gameObject.SetActive(false); // DanceHUD.Start() também faz isso
-        hud.ratingText = ratingTMP;
 
         // Countdown (centro)
         var cdPanel = NewUIObject("CountdownPanel", hudGO,

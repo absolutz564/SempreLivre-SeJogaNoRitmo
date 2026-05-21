@@ -1,22 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+/// <summary>
+/// Gerencia a pontuação de um único jogador.
+/// Não é singleton — DanceController mantém uma instância por jogador.
+/// </summary>
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager Instance { get; private set; }
-
-    public int TotalScore { get; private set; }
+    public int TotalScore       { get; private set; }
     public int MaxPossibleScore { get; private set; }
-    public int PerfectCount { get; private set; }
-    public int GreatCount  { get; private set; }
-    public int GoodCount   { get; private set; }
-    public int OkCount     { get; private set; }
-    public int MissCount   { get; private set; }
+    public int PerfectCount     { get; private set; }
+    public int GreatCount       { get; private set; }
+    public int GoodCount        { get; private set; }
+    public int OkCount          { get; private set; }
+    public int MissCount        { get; private set; }
 
-    // Histórico para tela de resultados
     private readonly List<(ScoreRating rating, int points)> _history = new();
-
-    void Awake() { Instance = this; }
 
     public void ResetScore()
     {
@@ -27,8 +26,8 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore(int points, ScoreRating rating)
     {
-        TotalScore += points;
-        MaxPossibleScore += 300; // máximo por passo = Perfect
+        TotalScore       += points;
+        MaxPossibleScore += 300;
         _history.Add((rating, points));
 
         switch (rating)

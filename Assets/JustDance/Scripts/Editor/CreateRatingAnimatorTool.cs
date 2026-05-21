@@ -36,7 +36,7 @@ public static class CreateRatingAnimatorTool
             "Assets criados em Assets/JustDance/Animations/\n" +
             "• RatingShow.anim  (bounce 0 → 1.3 → 1.0 em 0.35s)\n" +
             "• RatingPopupAnimator.controller\n\n" +
-            "O campo ratingAnimator do DanceHUD foi preenchido automaticamente.",
+            "O campo ratingAnimator dos PlayerHUDs foi preenchido automaticamente.",
             "OK");
     }
 
@@ -110,41 +110,36 @@ public static class CreateRatingAnimatorTool
 
     static bool WireToScene(AnimatorController ctrl)
     {
-        // Localizar RatingText na cena (filho de RatingPopup dentro de HUD)
-        var hudGO = GameObject.Find("HUD");
-        if (hudGO == null)
+        var playerHUDs = Object.FindObjectsOfType<PlayerHUD>();
+        if (playerHUDs.Length == 0)
         {
             EditorUtility.DisplayDialog("JustDance — Erro",
-                "GameObject 'HUD' não encontrado na cena.\n\n" +
-                "Abra a cena Dance e execute:\n" +
-                "JustDance > 3. Montar HUD da Cena Dance", "OK");
+                "Nenhum componente PlayerHUD encontrado na cena.\n\n" +
+                "Execute primeiro:\n" +
+                "JustDance > 6. Configurar Multi-Jogador", "OK");
             return false;
         }
 
-        var hud = hudGO.GetComponent<DanceHUD>();
-        if (hud == null)
+        int wired = 0;
+        foreach (var phud in playerHUDs)
         {
-            EditorUtility.DisplayDialog("JustDance — Erro",
-                "Componente DanceHUD não encontrado em 'HUD'.", "OK");
-            return false;
+            if (phud.ratingText == null) continue;
+            var anim = phud.ratingText.gameObject.GetComponent<Animator>()
+                    ?? phud.ratingText.gameObject.AddComponent<Animator>();
+            anim.runtimeAnimatorController = ctrl;
+            anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+            phud.ratingAnimator = anim;
+            EditorUtility.SetDirty(phud);
+            wired++;
         }
 
-        // O Animator vai no RatingText (que é o GameObject ativado/desativado pelo DanceHUD)
-        if (hud.ratingText == null)
+        if (wired == 0)
         {
-            EditorUtility.DisplayDialog("JustDance — Erro",
-                "DanceHUD.ratingText não está atribuído.\n\n" +
-                "Execute primeiro: JustDance > 3. Montar HUD da Cena Dance", "OK");
+            EditorUtility.DisplayDialog("JustDance — Aviso",
+                "PlayerHUDs encontrados mas nenhum tem 'ratingText' atribuído.\n\n" +
+                "Execute: JustDance > 6. Configurar Multi-Jogador", "OK");
             return false;
         }
-
-        var target = hud.ratingText.gameObject;
-        var anim   = target.GetComponent<Animator>() ?? target.AddComponent<Animator>();
-        anim.runtimeAnimatorController = ctrl;
-        anim.updateMode = AnimatorUpdateMode.UnscaledTime; // funciona mesmo com Time.timeScale=0
-
-        hud.ratingAnimator = anim;
-        EditorUtility.SetDirty(hud);
 
         return true;
     }

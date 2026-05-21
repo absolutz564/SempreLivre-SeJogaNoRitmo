@@ -33,18 +33,6 @@ public static class WireDanceHUDTool
                          TextAlignmentOptions.Center, Color.white);
         }
 
-        // ── RatingPopup / RatingText ─────────────────────────────────────────
-        var ratingPopup = EnsureChild(hudGO, "RatingPopup",
-            new Vector2(0.5f, 0.55f), new Vector2(0.5f, 0.55f), Vector2.zero, new Vector2(500, 90));
-
-        var rtTr = ratingPopup.transform.Find("RatingText");
-        var ratingTMP = rtTr != null
-            ? rtTr.GetComponent<TextMeshProUGUI>()
-            : NewTMP(ratingPopup, "RatingText", "PERFECT", 72,
-                     TextAlignmentOptions.Center, new Color(1f, 0.82f, 0f), FontStyles.Bold);
-        ratingTMP.gameObject.SetActive(false);
-        hud.ratingText = ratingTMP;
-
         // ── CountdownPanel / CountdownText ───────────────────────────────────
         var cdPanel = EnsureChild(hudGO, "CountdownPanel",
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(220, 220));
@@ -92,7 +80,7 @@ public static class WireDanceHUDTool
             b.targetGraphic = btnImg;
             NewTMP(btn, "BtnText", "▶  JOGAR", 36,
                    TextAlignmentOptions.Center, Color.white, FontStyles.Bold);
-            Debug.Log("[JustDance] BtnJogar criado — conecte manualmente: Button.OnClick → DanceController.StartDance()");
+            Debug.Log("[JustDance] BtnJogar criado — conecte manualmente: Button.OnClick → PlayerSelectModal.Show()");
         }
 
         // ── StepPreviewLane — faixa de passos estilo Just Dance ───────────────
@@ -106,7 +94,7 @@ public static class WireDanceHUDTool
             "Falta apenas conectar o botão:\n" +
             "• Selecione 'BtnJogar' na Hierarchy\n" +
             "• Button (Script) > OnClick (+)\n" +
-            "• Arraste [Game] → DanceController.StartDance()",
+            "• Arraste [Modal] → PlayerSelectModal.Show()",
             "OK");
     }
 
