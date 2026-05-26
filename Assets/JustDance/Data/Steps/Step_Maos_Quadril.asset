@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stepName: Maos Quadril
   description: 
-  previewSprite: {fileID: 21300000, guid: f954cd1ae4edeb044b8d1836e5b4b46c, type: 3}
+  previewSprite: {fileID: 21300000, guid: 75de59c6cc2447a4492e084666755df9, type: 3}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}
   duration: 1.2
   tolerance: 0.45

@@ -52,14 +52,15 @@ public static class PoseComparator
         return totalWeight > 0f ? weightedScore / totalWeight : 0f;
     }
 
+    public static float ThresholdPerfeito = 0.85f;
+    public static float ThresholdBom      = 0.55f;
+
     public static ScoreRating GetRating(float score)
     {
-        if (score >= 0.90f) return ScoreRating.Perfect;
-        if (score >= 0.72f) return ScoreRating.Great;
-        if (score >= 0.50f) return ScoreRating.Good;
-        if (score >= 0.30f) return ScoreRating.Ok;
+        if (score >= ThresholdPerfeito) return ScoreRating.Perfeito;
+        if (score >= ThresholdBom)      return ScoreRating.Bom;
         return ScoreRating.Miss;
     }
 }
 
-public enum ScoreRating { Miss, Ok, Good, Great, Perfect }
+public enum ScoreRating { Miss, Bom, Perfeito }

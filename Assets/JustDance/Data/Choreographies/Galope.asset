@@ -19,31 +19,31 @@ MonoBehaviour:
   bpm: 120
   firstBeatOffset: 0
   steps:
-  - step: {fileID: 11400000, guid: cca956b513384d349bd7a84075fcb1aa, type: 2}
+  - step: {fileID: 11400000, guid: eb1dcdf985fa6bb49a95c6fb20ee7704, type: 2}
     startTime: 7
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: 350b990d3c076904398a09018b5ec0b5, type: 2}
+  - step: {fileID: 11400000, guid: cdb586b3a82b08342810b5a2ec9cc6ee, type: 2}
     startTime: 8.5
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: a6ac310eeef4c324d9b368cb6369ccb8, type: 2}
+  - step: {fileID: 11400000, guid: eb1dcdf985fa6bb49a95c6fb20ee7704, type: 2}
     startTime: 9.5
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: 02f654f9ce514aa4e8e458c16f1672fb, type: 2}
+  - step: {fileID: 11400000, guid: cdb586b3a82b08342810b5a2ec9cc6ee, type: 2}
     startTime: 12
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: 2b5394b58e8561a42ba1c3cd3d3210db, type: 2}
+  - step: {fileID: 11400000, guid: eb1dcdf985fa6bb49a95c6fb20ee7704, type: 2}
     startTime: 15
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: 9641ff2ecdc5277419af7985f0cf5016, type: 2}
+  - step: {fileID: 11400000, guid: cdb586b3a82b08342810b5a2ec9cc6ee, type: 2}
     startTime: 20
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: a840eee1193c7a04499fda333d694322, type: 2}
+  - step: {fileID: 11400000, guid: eb1dcdf985fa6bb49a95c6fb20ee7704, type: 2}
     startTime: 28
     windowBefore: 0.5
     windowAfter: 0.3

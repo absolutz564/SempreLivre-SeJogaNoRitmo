@@ -9,18 +9,15 @@ public class ScoreManager : MonoBehaviour
 {
     public int TotalScore       { get; private set; }
     public int MaxPossibleScore { get; private set; }
-    public int PerfectCount     { get; private set; }
-    public int GreatCount       { get; private set; }
-    public int GoodCount        { get; private set; }
-    public int OkCount          { get; private set; }
+    public int PerfeitoCount    { get; private set; }
+    public int BomCount         { get; private set; }
     public int MissCount        { get; private set; }
 
     private readonly List<(ScoreRating rating, int points)> _history = new();
 
     public void ResetScore()
     {
-        TotalScore = MaxPossibleScore = PerfectCount = GreatCount =
-            GoodCount = OkCount = MissCount = 0;
+        TotalScore = MaxPossibleScore = PerfeitoCount = BomCount = MissCount = 0;
         _history.Clear();
     }
 
@@ -32,11 +29,9 @@ public class ScoreManager : MonoBehaviour
 
         switch (rating)
         {
-            case ScoreRating.Perfect: PerfectCount++; break;
-            case ScoreRating.Great:   GreatCount++;   break;
-            case ScoreRating.Good:    GoodCount++;    break;
-            case ScoreRating.Ok:      OkCount++;      break;
-            default:                  MissCount++;    break;
+            case ScoreRating.Perfeito: PerfeitoCount++; break;
+            case ScoreRating.Bom:      BomCount++;      break;
+            default:                   MissCount++;     break;
         }
     }
 

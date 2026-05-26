@@ -31,15 +31,15 @@ public class StepPreviewItem : MonoBehaviour
     {
         entry = e;
         var step = e.step;
-        stepLabel.text = step != null ? step.stepName : "?";
+        // stepLabel.text = step != null ? step.stepName : "?";
 
         if (step?.previewSprite != null)
         {
             poseImage.sprite  = step.previewSprite;
             poseImage.enabled = true;
             backgroundImage.color = new Color(0.08f, 0.08f, 0.08f);
-            _baseColor      = Color.white;
-            _highlightColor = new Color(1f, 1f, 0.75f);
+            _baseColor      = new Color(0, 0, 0, 0);
+            _highlightColor = new Color(1f, 1f, 0.75f, 0.2f);
         }
         else
         {

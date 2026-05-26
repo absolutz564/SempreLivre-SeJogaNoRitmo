@@ -156,8 +156,8 @@ public class DanceHUD : MonoBehaviour
             var sm = managers != null && managers.Length > 0 ? managers[0] : null;
             if (finalScoreText)   finalScoreText.text   = sm?.TotalScore.ToString("N0") ?? "0";
             if (gradeText)        gradeText.text        = sm?.GetGrade() ?? "-";
-            if (perfectCountText) perfectCountText.text = $"PERFECT x{sm?.PerfectCount}";
-            if (greatCountText)   greatCountText.text   = $"GREAT x{sm?.GreatCount}";
+            if (perfectCountText) perfectCountText.text = $"PERFEITO x{sm?.PerfeitoCount}";
+            if (greatCountText)   greatCountText.text   = $"BOM x{sm?.BomCount}";
             if (missCountText)    missCountText.text     = $"MISS x{sm?.MissCount}";
         }
     }

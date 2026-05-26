@@ -4,37 +4,28 @@ using TMPro;
 using System.Collections;
 
 /// <summary>
-/// Painel de HUD de um único jogador: pontuação, popup de rating e barra de pose ao vivo.
-/// Coloque um por jogador na cena; o DanceHUD delega chamadas per-player a eles.
+/// Painel de HUD de um único jogador: pontuação, popup de rating (imagem) e barra de pose ao vivo.
 /// </summary>
 public class PlayerHUD : MonoBehaviour
 {
     [Header("Identidade")]
-    public TextMeshProUGUI playerLabel;   // ex.: "JOGADOR 1"
+    public TextMeshProUGUI playerLabel;
 
     [Header("Pontuação")]
     public TextMeshProUGUI scoreText;
 
-    [Header("Rating Popup")]
-    public TextMeshProUGUI ratingText;
-    public Animator        ratingAnimator;
+    [Header("Rating Popup — imagens")]
+    public Image   ratingImage;        // Image que exibe o sprite do rating
+    public Sprite  spriteBom;
+    public Sprite  spritePerfeito;
+    public Animator ratingAnimator;    // opcional — acione trigger "Show"
 
     [Header("Pose ao vivo")]
     public Slider livePoseSlider;
 
-    static readonly string[] Labels = { "MISS", "OK", "GOOD", "GREAT", "PERFECT" };
-    static readonly Color[] Colors  =
-    {
-        Color.gray,
-        Color.white,
-        Color.cyan,
-        Color.yellow,
-        new Color(1f, 0.8f, 0f),
-    };
-
     void Start()
     {
-        if (ratingText) ratingText.gameObject.SetActive(false);
+        if (ratingImage) ratingImage.gameObject.SetActive(false);
     }
 
     public void UpdateScore(int score)
@@ -49,11 +40,15 @@ public class PlayerHUD : MonoBehaviour
 
     public void ShowRatingPopup(ScoreRating rating)
     {
-        if (ratingText == null) return;
-        ratingText.gameObject.SetActive(true);
-        ratingText.text  = Labels[(int)rating];
-        ratingText.color = Colors[(int)rating];
-        if (ratingAnimator != null) ratingAnimator.SetTrigger("Show");
+        if (ratingImage == null || rating == ScoreRating.Miss)
+        {
+            if (ratingImage) ratingImage.gameObject.SetActive(false);
+            return;
+        }
+
+        ratingImage.sprite = rating == ScoreRating.Perfeito ? spritePerfeito : spriteBom;
+        ratingImage.gameObject.SetActive(true);
+        ratingAnimator?.SetTrigger("Show");
         StopCoroutine(nameof(HideRating));
         StartCoroutine(nameof(HideRating));
     }
@@ -61,6 +56,6 @@ public class PlayerHUD : MonoBehaviour
     IEnumerator HideRating()
     {
         yield return new WaitForSeconds(1.2f);
-        if (ratingText) ratingText.gameObject.SetActive(false);
+        if (ratingImage) ratingImage.gameObject.SetActive(false);
     }
 }

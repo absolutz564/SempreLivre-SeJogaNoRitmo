@@ -176,7 +176,7 @@ public class StepPreviewLane : MonoBehaviour
         var go   = new GameObject($"StepItem_{_spawnCount++}");
         go.transform.SetParent(laneContainer, false);
         var rect = go.AddComponent<RectTransform>();
-        rect.sizeDelta        = new Vector2(160f, 160f);
+        rect.sizeDelta        = new Vector2(240f, 240f);
         rect.anchorMin        = new Vector2(0.5f, 0.5f);
         rect.anchorMax        = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = Vector2.zero;

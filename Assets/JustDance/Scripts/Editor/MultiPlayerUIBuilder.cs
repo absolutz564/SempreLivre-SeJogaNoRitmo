@@ -177,17 +177,14 @@ public static class MultiPlayerUIBuilder
             scoreTmp.color     = Color.white;
             scoreTmp.fontStyle = FontStyles.Bold;
 
-            // Rating
-            var ratingGO = NewRect("Rating", root);
-            ratingGO.anchorMin = new Vector2(0f, 0.10f);
-            ratingGO.anchorMax = new Vector2(1f, 0.42f);
+            // Rating (Image — sprite trocado em runtime por PlayerHUD)
+            var ratingGO  = NewRect("Rating", root);
+            ratingGO.anchorMin = new Vector2(0.1f, 0.10f);
+            ratingGO.anchorMax = new Vector2(0.9f, 0.42f);
             ratingGO.offsetMin = ratingGO.offsetMax = Vector2.zero;
-            var ratingTmp = ratingGO.gameObject.AddComponent<TextMeshProUGUI>();
-            ratingTmp.text      = "";
-            ratingTmp.fontSize  = 26f;
-            ratingTmp.alignment = TextAlignmentOptions.Center;
-            ratingTmp.color     = Color.yellow;
-            ratingTmp.fontStyle = FontStyles.Bold;
+            var ratingImg = ratingGO.gameObject.AddComponent<Image>();
+            ratingImg.color           = Color.white;
+            ratingImg.preserveAspect  = true;
             ratingGO.gameObject.SetActive(false);
 
             // Pose slider
@@ -203,7 +200,7 @@ public static class MultiPlayerUIBuilder
             var playerHud = root.gameObject.AddComponent<PlayerHUD>();
             playerHud.playerLabel    = lblTmp;
             playerHud.scoreText      = scoreTmp;
-            playerHud.ratingText     = ratingTmp;
+            playerHud.ratingImage    = ratingImg;
             playerHud.livePoseSlider = slider;
 
             huds[i] = playerHud;

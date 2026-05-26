@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stepName: Maos Alto
   description: 
-  previewSprite: {fileID: 21300000, guid: ef0a47b440e52df4798db45faa707739, type: 3}
+  previewSprite: {fileID: 21300000, guid: 0902063358b19a946bbbddd6e7b85dea, type: 3}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}
   duration: 1.2
   tolerance: 0.45

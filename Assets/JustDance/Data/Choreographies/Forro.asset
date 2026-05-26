@@ -20,38 +20,46 @@ MonoBehaviour:
   firstBeatOffset: 0
   steps:
   - step: {fileID: 11400000, guid: e5d29d7238687d343b434ccc488e79c0, type: 2}
-    startTime: 2.4
+    startTime: 3.5
     windowBefore: 0.8
     windowAfter: 0.3
   - step: {fileID: 11400000, guid: a2df2b653b65bf542921eb542c6e0172, type: 2}
-    startTime: 3.4
+    startTime: 5
     windowBefore: 0.8
     windowAfter: 0.3
   - step: {fileID: 11400000, guid: cca956b513384d349bd7a84075fcb1aa, type: 2}
-    startTime: 7
+    startTime: 8
     windowBefore: 0.8
     windowAfter: 0.3
   - step: {fileID: 11400000, guid: 350b990d3c076904398a09018b5ec0b5, type: 2}
-    startTime: 8.5
-    windowBefore: 0.8
-    windowAfter: 0.3
-  - step: {fileID: 11400000, guid: a6ac310eeef4c324d9b368cb6369ccb8, type: 2}
     startTime: 9.5
     windowBefore: 0.8
     windowAfter: 0.3
+  - step: {fileID: 11400000, guid: a6ac310eeef4c324d9b368cb6369ccb8, type: 2}
+    startTime: 11
+    windowBefore: 0.8
+    windowAfter: 0.3
   - step: {fileID: 11400000, guid: 02f654f9ce514aa4e8e458c16f1672fb, type: 2}
-    startTime: 12
+    startTime: 13
     windowBefore: 0.8
     windowAfter: 0.3
   - step: {fileID: 11400000, guid: 2b5394b58e8561a42ba1c3cd3d3210db, type: 2}
-    startTime: 15
+    startTime: 18
     windowBefore: 0.8
     windowAfter: 0.3
   - step: {fileID: 11400000, guid: 9641ff2ecdc5277419af7985f0cf5016, type: 2}
-    startTime: 20
+    startTime: 21.4
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 2b5394b58e8561a42ba1c3cd3d3210db, type: 2}
+    startTime: 25.4
+    windowBefore: 0.8
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 9641ff2ecdc5277419af7985f0cf5016, type: 2}
+    startTime: 27.4
     windowBefore: 0.8
     windowAfter: 0.3
   - step: {fileID: 11400000, guid: a840eee1193c7a04499fda333d694322, type: 2}
-    startTime: 28
+    startTime: 30
     windowBefore: 0.8
     windowAfter: 0.3

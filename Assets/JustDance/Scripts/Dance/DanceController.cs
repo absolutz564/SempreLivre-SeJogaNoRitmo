@@ -26,11 +26,19 @@ public class DanceController : MonoBehaviour
     [Tooltip("Avaliações de pose por segundo")]
     public float evaluationRate = 10f;
 
+    [Header("Precisão de Avaliação")]
+    [Tooltip("Tolerância padrão de distância por joint — menor = mais rigoroso (sobrescrita pelo campo Tolerance de cada DanceStep)")]
+    public float defaultTolerance = 0.15f;
+
+    [Tooltip("Score mínimo para PERFEITO")] [Range(0f, 1f)] public float scorePerfeito = 0.85f;
+    [Tooltip("Score mínimo para BOM")]      [Range(0f, 1f)] public float scoreBom       = 0.55f;
+
     // Estado interno
-    private float _musicTime;
-    private float _gameTimer;
-    private bool  _hasClip;
-    private bool  _isPlaying;
+    private float  _musicTime;
+    private float  _gameTimer;
+    private bool   _hasClip;
+    private bool   _isPlaying;
+    private double _dspStartTime;
     private DanceChoreography.StepEntry                     _currentEntry;
     private Dictionary<KinectBodyTracker.JointId, Vector3> _referenceJoints;
     private float _nextEvalTime;
@@ -40,7 +48,12 @@ public class DanceController : MonoBehaviour
     public DanceChoreography Choreography => choreography;
     public bool              IsPlaying    => _isPlaying;
 
-    void Awake() => Instance = this;
+    void Awake()
+    {
+        Instance = this;
+        PoseComparator.ThresholdPerfeito = scorePerfeito;
+        PoseComparator.ThresholdBom      = scoreBom;
+    }
 
     public void StartDance()
     {
@@ -85,7 +98,17 @@ public class DanceController : MonoBehaviour
         if (_hasClip)
         {
             musicSource.clip = choreography.musicClip;
-            musicSource.Play();
+            // Aguarda o clip terminar de carregar para evitar delay de buffering
+            while (musicSource.clip.loadState == AudioDataLoadState.Loading)
+                yield return null;
+            // Agenda 100 ms à frente — dá tempo ao hardware de áudio iniciar sem dessincronizar
+            _dspStartTime = AudioSettings.dspTime + 0.1;
+            musicSource.PlayScheduled(_dspStartTime);
+            yield return new WaitUntil(() => AudioSettings.dspTime >= _dspStartTime);
+        }
+        else
+        {
+            _dspStartTime = AudioSettings.dspTime;
         }
         _isPlaying = true;
         hud?.HideMessage();
@@ -93,7 +116,9 @@ public class DanceController : MonoBehaviour
         // 5. Loop de gameplay
         while (_isPlaying)
         {
-            _musicTime = _hasClip ? musicSource.time : (_gameTimer += Time.deltaTime);
+            _musicTime = _hasClip
+                ? (float)(AudioSettings.dspTime - _dspStartTime)
+                : (_gameTimer += Time.deltaTime);
 
             if (_musicTime >= choreography.TotalDuration)
             {
@@ -146,7 +171,7 @@ public class DanceController : MonoBehaviour
         for (int p = 0; p < players && p < scoreManagers.Length; p++)
         {
             var sm = scoreManagers[p];
-            Debug.Log($"[DanceController] J{p + 1}: Score={sm?.TotalScore}  Perfect={sm?.PerfectCount}  Great={sm?.GreatCount}  Miss={sm?.MissCount}");
+            Debug.Log($"[DanceController] J{p + 1}: Score={sm?.TotalScore}  Perfeito={sm?.PerfeitoCount}  Bom={sm?.BomCount}  Miss={sm?.MissCount}");
         }
 
         hud?.ShowResults(scoreManagers);
@@ -167,7 +192,7 @@ public class DanceController : MonoBehaviour
             }
 
             float score = PoseComparator.Compare(joints, _referenceJoints,
-                                                  _currentEntry.step?.tolerance ?? 0.25f);
+                                                  _currentEntry.step?.tolerance ?? defaultTolerance);
 
             Debug.Log($"[DanceController] J{p + 1} '{_currentEntry.step?.stepName}' score={score:F2}");
 
@@ -195,11 +220,9 @@ public class DanceController : MonoBehaviour
 
     private int RatingToPoints(ScoreRating r) => r switch
     {
-        ScoreRating.Perfect => 300,
-        ScoreRating.Great   => 200,
-        ScoreRating.Good    => 100,
-        ScoreRating.Ok      =>  50,
-        _                   =>   0,
+        ScoreRating.Perfeito => 300,
+        ScoreRating.Bom      => 150,
+        _                    =>   0,
     };
 
     public void StopDance()

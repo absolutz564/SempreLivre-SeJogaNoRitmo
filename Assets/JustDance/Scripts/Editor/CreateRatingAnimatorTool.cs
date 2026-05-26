@@ -123,9 +123,9 @@ public static class CreateRatingAnimatorTool
         int wired = 0;
         foreach (var phud in playerHUDs)
         {
-            if (phud.ratingText == null) continue;
-            var anim = phud.ratingText.gameObject.GetComponent<Animator>()
-                    ?? phud.ratingText.gameObject.AddComponent<Animator>();
+            if (phud.ratingImage == null) continue;
+            var anim = phud.ratingImage.gameObject.GetComponent<Animator>()
+                    ?? phud.ratingImage.gameObject.AddComponent<Animator>();
             anim.runtimeAnimatorController = ctrl;
             anim.updateMode = AnimatorUpdateMode.UnscaledTime;
             phud.ratingAnimator = anim;

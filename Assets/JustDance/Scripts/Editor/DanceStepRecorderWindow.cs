@@ -11,9 +11,10 @@ using JointId = KinectBodyTracker.JointId;
 ///
 /// FLUXO:
 ///   1. Entre em Play Mode na cena com KinectBodyTracker
-///   2. Fique em frente ao Kinect (veja a silhueta aparecer)
-///   3. Clique "Gravar em 3s", assuma a pose durante a contagem
-///   4. Clique "Salvar" para criar o DanceStep.asset
+///   2. Carregue o AudioClip da música no campo "Música"
+///   3. Dê Play na música e pause no momento certo
+///   4. Fique em frente ao Kinect, assuma a pose e clique "Capturar Agora"
+///   5. Clique "Salvar" — o passo é adicionado à coreografia com o tempo correto
 /// </summary>
 public class DanceStepRecorderWindow : EditorWindow
 {
@@ -23,13 +24,21 @@ public class DanceStepRecorderWindow : EditorWindow
     float  _duration     = 0.8f;
     float  _tolerance    = 0.45f;
 
+    // ── Música ────────────────────────────────────────────────────────────────
+    AudioClip         _musicClip;
+    AudioSource       _previewSource;
+
+    // ── Coreografia destino ───────────────────────────────────────────────────
+    DanceChoreography _targetChoreo;
+
     // ── Countdown ─────────────────────────────────────────────────────────────
     bool   _counting;
-    double _captureAt;          // EditorApplication.timeSinceStartup quando captura
+    double _captureAt;
     const float CountdownSecs = 3f;
 
     // ── Última captura ────────────────────────────────────────────────────────
     Dictionary<JointId, Vector3> _captured;
+    float  _capturedMusicTime = -1f;
     string _status      = "Aguardando Play Mode...";
     Color  _statusColor = Color.gray;
 
@@ -37,7 +46,6 @@ public class DanceStepRecorderWindow : EditorWindow
     const float PreviewW = 200f;
     const float PreviewH = 300f;
 
-    // Joints que formam o esqueleto
     static readonly (JointId A, JointId B)[] Bones =
     {
         (JointId.Head,          JointId.Neck),
@@ -65,6 +73,10 @@ public class DanceStepRecorderWindow : EditorWindow
     [MenuItem("Window/JustDance/Step Recorder")]
     public static void Open() => GetWindow<DanceStepRecorderWindow>("Step Recorder");
 
+    // ── Ciclo de vida ──────────────────────────────────────────────────────────
+
+    void OnDisable() => DestroyPreviewSource();
+
     // ── GUI ───────────────────────────────────────────────────────────────────
 
     void OnGUI()
@@ -73,15 +85,18 @@ public class DanceStepRecorderWindow : EditorWindow
         bool tracker = inPlay && KinectBodyTracker.Instance != null;
         bool hasBody = tracker && KinectBodyTracker.Instance.GetNormalizedJoints() != null;
 
-        // ── Cabeçalho / status ────────────────────────────────────────────────
         GUILayout.Label("Dance Step Recorder", EditorStyles.boldLabel);
         DrawStatusBar(inPlay, tracker, hasBody);
         EditorGUILayout.Space(6);
 
-        // ── Corpo: preview + config lado a lado ──────────────────────────────
+        DrawMusicSection(inPlay);
+        EditorGUILayout.Space(4);
+
+        DrawChoreoSection();
+        EditorGUILayout.Space(6);
+
         EditorGUILayout.BeginHorizontal();
 
-        // Preview do esqueleto
         var previewRect = GUILayoutUtility.GetRect(PreviewW, PreviewH,
             GUILayout.Width(PreviewW), GUILayout.Height(PreviewH));
         DrawSkeletonPreview(previewRect,
@@ -89,7 +104,6 @@ public class DanceStepRecorderWindow : EditorWindow
 
         EditorGUILayout.Space(8);
 
-        // Config + botões
         EditorGUILayout.BeginVertical(GUILayout.Width(position.width - PreviewW - 24));
         DrawConfig();
         EditorGUILayout.Space(8);
@@ -100,26 +114,112 @@ public class DanceStepRecorderWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space(6);
-
-        // ── Última captura + salvar ───────────────────────────────────────────
         DrawCaptureResult();
 
-        // ── Status ────────────────────────────────────────────────────────────
         EditorGUILayout.Space(4);
         var style = new GUIStyle(EditorStyles.helpBox) { fontSize = 12, wordWrap = true };
         GUI.color = _statusColor;
         GUILayout.Label(_status, style);
         GUI.color = Color.white;
 
-        // Repaint contínuo em play mode
         if (inPlay) Repaint();
 
-        // Verificar se chegou a hora de capturar
         if (_counting && EditorApplication.timeSinceStartup >= _captureAt)
         {
             _counting = false;
             DoCapture(hasBody);
         }
+    }
+
+    // ── Seção de música ───────────────────────────────────────────────────────
+
+    void DrawMusicSection(bool inPlay)
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        GUILayout.Label("Música", EditorStyles.boldLabel);
+
+        EditorGUI.BeginChangeCheck();
+        var newClip = (AudioClip)EditorGUILayout.ObjectField("AudioClip", _musicClip, typeof(AudioClip), false);
+        if (EditorGUI.EndChangeCheck())
+        {
+            DestroyPreviewSource();
+            _musicClip = newClip;
+        }
+
+        if (_musicClip != null)
+        {
+            if (!inPlay)
+            {
+                EditorGUILayout.HelpBox("Entre em Play Mode para controlar a música.", MessageType.Info);
+            }
+            else
+            {
+                var src = GetOrCreatePreviewSource();
+
+                // Botões play/pause/stop
+                EditorGUILayout.BeginHorizontal();
+                bool playing = src.isPlaying;
+                if (GUILayout.Button(playing ? "⏸  Pausar" : "▶  Play", GUILayout.Height(28), GUILayout.Width(90)))
+                {
+                    if (playing)
+                    {
+                        src.Pause();
+                    }
+                    else
+                    {
+                        if (src.clip != _musicClip) { src.clip = _musicClip; src.time = 0f; }
+                        src.Play();
+                    }
+                }
+                if (GUILayout.Button("⏹  Stop", GUILayout.Height(28), GUILayout.Width(70)))
+                {
+                    src.Stop();
+                    src.clip = null;
+                }
+                EditorGUILayout.EndHorizontal();
+
+                // Barra de progresso / seek
+                float total = _musicClip.length;
+                float cur   = src.clip == _musicClip ? src.time : 0f;
+
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label(FormatTime(cur), GUILayout.Width(46));
+
+                EditorGUI.BeginChangeCheck();
+                float seeked = GUILayout.HorizontalSlider(cur, 0f, total);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    if (src.clip != _musicClip) { src.clip = _musicClip; }
+                    src.time = Mathf.Clamp(seeked, 0f, total - 0.01f);
+                    if (!src.isPlaying) src.Play();
+                    src.Pause();
+                }
+
+                GUILayout.Label(FormatTime(total), GUILayout.Width(46));
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    // ── Seção de coreografia destino ──────────────────────────────────────────
+
+    void DrawChoreoSection()
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        GUILayout.Label("Coreografia Destino (opcional)", EditorStyles.boldLabel);
+        _targetChoreo = (DanceChoreography)EditorGUILayout.ObjectField(
+            "Adicionar a", _targetChoreo, typeof(DanceChoreography), false);
+        if (_targetChoreo != null)
+        {
+            int count = _targetChoreo.steps?.Length ?? 0;
+            EditorGUILayout.HelpBox(
+                $"{_targetChoreo.name}  ({count} passo{(count != 1 ? "s" : "")})\n" +
+                "O passo salvo será inserido automaticamente com o tempo da música.",
+                MessageType.Info);
+        }
+        EditorGUILayout.EndVertical();
     }
 
     // ── Status bar ────────────────────────────────────────────────────────────
@@ -145,13 +245,13 @@ public class DanceStepRecorderWindow : EditorWindow
     void DrawConfig()
     {
         GUILayout.Label("Configuração", EditorStyles.boldLabel);
-        _stepName    = EditorGUILayout.TextField("Nome",       _stepName);
-        _duration    = EditorGUILayout.Slider("Duração (s)",  _duration,  0.3f, 3f);
-        _tolerance   = EditorGUILayout.Slider("Tolerância",   _tolerance, 0.10f, 0.6f);
-        _outputFolder = EditorGUILayout.TextField("Pasta",    _outputFolder);
+        _stepName     = EditorGUILayout.TextField("Nome",       _stepName);
+        _duration     = EditorGUILayout.Slider("Duração (s)",  _duration,  0.3f, 3f);
+        _tolerance    = EditorGUILayout.Slider("Tolerância",   _tolerance, 0.10f, 0.6f);
+        _outputFolder = EditorGUILayout.TextField("Pasta",     _outputFolder);
     }
 
-    // ── Botões ────────────────────────────────────────────────────────────────
+    // ── Botões de captura ─────────────────────────────────────────────────────
 
     void DrawButtons(bool inPlay, bool hasBody)
     {
@@ -188,7 +288,6 @@ public class DanceStepRecorderWindow : EditorWindow
 
         EditorGUILayout.Space(6);
 
-        // Número grande
         var numStyle = new GUIStyle(EditorStyles.boldLabel)
         {
             fontSize  = 64,
@@ -197,11 +296,8 @@ public class DanceStepRecorderWindow : EditorWindow
         numStyle.normal.textColor = number <= 1 ? Color.red
                                   : number == 2 ? Color.yellow
                                   : Color.white;
+        GUILayout.Label(number > 0 ? number.ToString() : "GO!", numStyle, GUILayout.Height(80));
 
-        GUILayout.Label(number > 0 ? number.ToString() : "GO!", numStyle,
-            GUILayout.Height(80));
-
-        // Barra de progresso
         float t = 1f - (float)(remaining / CountdownSecs);
         var   progressRect = GUILayoutUtility.GetRect(1, 8);
         EditorGUI.DrawRect(progressRect, new Color(0.2f, 0.2f, 0.2f));
@@ -210,14 +306,20 @@ public class DanceStepRecorderWindow : EditorWindow
         EditorGUI.DrawRect(fillRect, number <= 1 ? Color.red : Color.yellow);
     }
 
-    // ── Resultado da captura ─────────────────────────────────────────────────
+    // ── Resultado da captura ──────────────────────────────────────────────────
 
     void DrawCaptureResult()
     {
         if (_captured == null) return;
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        GUILayout.Label($"Captura pronta — {_captured.Count} juntas registradas", EditorStyles.boldLabel);
+
+        string timeLabel = _capturedMusicTime >= 0
+            ? $"Tempo: {FormatTime(_capturedMusicTime)}  ({_capturedMusicTime:F3} s)"
+            : "Tempo: —  (música não estava ativa)";
+
+        GUILayout.Label($"Captura pronta  —  {_captured.Count} juntas", EditorStyles.boldLabel);
+        GUILayout.Label(timeLabel);
 
         GUI.enabled = true;
         if (GUILayout.Button("💾  Salvar como DanceStep Asset", GUILayout.Height(36)))
@@ -228,18 +330,15 @@ public class DanceStepRecorderWindow : EditorWindow
 
     // ── Preview do esqueleto ──────────────────────────────────────────────────
 
-    void DrawSkeletonPreview(Rect rect,
-        Dictionary<JointId, Vector3> joints)
+    void DrawSkeletonPreview(Rect rect, Dictionary<JointId, Vector3> joints)
     {
-        // Fundo
         EditorGUI.DrawRect(rect, new Color(0.1f, 0.1f, 0.15f));
 
         if (joints == null || joints.Count == 0)
         {
             var noBodyStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel)
                 { fontSize = 11, wordWrap = true };
-            GUI.Label(new Rect(rect.x + 10, rect.center.y - 20,
-                               rect.width - 20, 40),
+            GUI.Label(new Rect(rect.x + 10, rect.center.y - 20, rect.width - 20, 40),
                       "Nenhum corpo\ndetectado", noBodyStyle);
             return;
         }
@@ -247,20 +346,12 @@ public class DanceStepRecorderWindow : EditorWindow
         if (Event.current.type != EventType.Repaint) return;
 
         Handles.BeginGUI();
-
-        // Ossos
         Handles.color = new Color(0.3f, 0.85f, 0.3f, 0.9f);
         foreach (var (a, b) in Bones)
         {
             if (joints.TryGetValue(a, out var pa) && joints.TryGetValue(b, out var pb))
-            {
-                var sa = ToGUI(pa, rect);
-                var sb = ToGUI(pb, rect);
-                Handles.DrawLine(sa, sb);
-            }
+                Handles.DrawLine(ToGUI(pa, rect), ToGUI(pb, rect));
         }
-
-        // Juntas
         foreach (var kv in joints)
         {
             var  gs    = ToGUI(kv.Value, rect);
@@ -269,33 +360,24 @@ public class DanceStepRecorderWindow : EditorWindow
             Color c    = isHand ? Color.yellow : new Color(0.2f, 1f, 0.4f);
             EditorGUI.DrawRect(new Rect(gs.x - r, gs.y - r, r * 2, r * 2), c);
         }
-
         Handles.EndGUI();
     }
 
-    // Coordenadas normalizadas → posição GUI dentro do rect de preview
     static Vector3 ToGUI(Vector3 joint, Rect rect)
     {
-        // X: -1.5 … +1.5  →  rect.left … rect.right
-        // Y: +2.0 … -3.5  →  rect.top  … rect.bottom (invertido)
         const float xMin = -1.5f, xMax = 1.5f;
         const float yMin = -3.5f, yMax =  2.0f;
-
         float nx = (joint.x - xMin) / (xMax - xMin);
-        float ny = 1f - (joint.y - yMin) / (yMax - yMin); // inverte Y
-
-        return new Vector3(
-            rect.x + nx * rect.width,
-            rect.y + ny * rect.height,
-            0f);
+        float ny = 1f - (joint.y - yMin) / (yMax - yMin);
+        return new Vector3(rect.x + nx * rect.width, rect.y + ny * rect.height, 0f);
     }
 
     // ── Lógica de captura ─────────────────────────────────────────────────────
 
     void StartCountdown()
     {
-        _counting    = true;
-        _captureAt   = EditorApplication.timeSinceStartup + CountdownSecs;
+        _counting  = true;
+        _captureAt = EditorApplication.timeSinceStartup + CountdownSecs;
         SetStatus("Assuma a pose! Capturando em 3...", Color.yellow);
     }
 
@@ -315,7 +397,18 @@ public class DanceStepRecorderWindow : EditorWindow
         }
 
         _captured = new Dictionary<JointId, Vector3>(joints);
-        SetStatus($"Pose capturada! {joints.Count} juntas. Clique em Salvar.", Color.cyan);
+
+        // Registra o tempo atual da música (se estiver carregada e ativa)
+        _capturedMusicTime = (_previewSource != null
+                               && _previewSource.clip == _musicClip
+                               && _musicClip != null)
+            ? _previewSource.time
+            : -1f;
+
+        string timeInfo = _capturedMusicTime >= 0
+            ? $"  |  Tempo: {FormatTime(_capturedMusicTime)}"
+            : "";
+        SetStatus($"Pose capturada! {joints.Count} juntas.{timeInfo} Clique em Salvar.", Color.cyan);
     }
 
     // ── Salvar asset ──────────────────────────────────────────────────────────
@@ -339,15 +432,27 @@ public class DanceStepRecorderWindow : EditorWindow
         asset.FromDictionary(_captured);
 
         if (existing == null)
-        {
             AssetDatabase.CreateAsset(asset, path);
-            SetStatus($"Asset criado: {path}", Color.green);
-        }
         else
-        {
             EditorUtility.SetDirty(asset);
-            AssetDatabase.SaveAssets();
-            SetStatus($"Asset atualizado: {path}", Color.green);
+
+        // Adiciona à coreografia destino com o tempo capturado
+        if (_targetChoreo != null && _capturedMusicTime >= 0f)
+        {
+            var list = new List<DanceChoreography.StepEntry>(
+                _targetChoreo.steps ?? System.Array.Empty<DanceChoreography.StepEntry>());
+
+            list.Add(new DanceChoreography.StepEntry
+            {
+                step         = asset,
+                startTime    = _capturedMusicTime,
+                windowBefore = 0.5f,
+                windowAfter  = 0.3f,
+            });
+
+            list.Sort((a, b) => a.startTime.CompareTo(b.startTime));
+            _targetChoreo.steps = list.ToArray();
+            EditorUtility.SetDirty(_targetChoreo);
         }
 
         AssetDatabase.SaveAssets();
@@ -355,9 +460,46 @@ public class DanceStepRecorderWindow : EditorWindow
         EditorUtility.FocusProjectWindow();
         Selection.activeObject = asset;
 
-        // Sugere o próximo nome
-        _stepName = IncrementName(_stepName);
-        _captured = null; // limpa para próxima captura
+        string choreoInfo = (_targetChoreo != null && _capturedMusicTime >= 0f)
+            ? $"\nAdicionado a '{_targetChoreo.name}' em {FormatTime(_capturedMusicTime)}"
+            : _capturedMusicTime >= 0f
+                ? $"\nTempo registrado: {FormatTime(_capturedMusicTime)} — arraste para sua DanceChoreography"
+                : "";
+
+        SetStatus($"Salvo: {path}{choreoInfo}", Color.green);
+
+        _stepName  = IncrementName(_stepName);
+        _captured  = null;
+        _capturedMusicTime = -1f;
+    }
+
+    // ── AudioSource temporário ────────────────────────────────────────────────
+
+    AudioSource GetOrCreatePreviewSource()
+    {
+        if (_previewSource != null) return _previewSource;
+        var go = new GameObject("[StepRecorder_Audio]") { hideFlags = HideFlags.HideAndDontSave };
+        Object.DontDestroyOnLoad(go);
+        _previewSource = go.AddComponent<AudioSource>();
+        _previewSource.playOnAwake = false;
+        return _previewSource;
+    }
+
+    void DestroyPreviewSource()
+    {
+        if (_previewSource == null) return;
+        _previewSource.Stop();
+        if (_previewSource.gameObject != null)
+            Object.DestroyImmediate(_previewSource.gameObject);
+        _previewSource = null;
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    static string FormatTime(float s)
+    {
+        int m = (int)(s / 60);
+        return $"{m:0}:{s % 60:00.0}";
     }
 
     static string IncrementName(string name)
