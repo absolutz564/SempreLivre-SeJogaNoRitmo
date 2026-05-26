@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6e0a2588896c246bd35d804f00c19b, type: 3}
+  m_Name: Step_Xote_-_Passo2
+  m_EditorClassIdentifier: 
+  stepName: Xote - Passo2
+  description: 
+  previewSprite: {fileID: 21300000, guid: 479951efdcb5dcc4ba31fd38a016692c, type: 3}
+  arrowColor: {r: 1, g: 1, b: 1, a: 1}
+  duration: 0.8
+  tolerance: 0.45
+  referenceJoints:
+  - jointId: 0
+    normalizedPosition: {x: 0, y: 0, z: 0}
+  - jointId: 1
+    normalizedPosition: {x: 0.015475383, y: 0.56929785, z: 0.1152029}
+  - jointId: 2
+    normalizedPosition: {x: 0.029798701, y: 1.1160772, z: 0.20254627}
+  - jointId: 3
+    normalizedPosition: {x: 0.08707832, y: 1.3485872, z: 0.2521684}
+  - jointId: 4
+    normalizedPosition: {x: -0.24832942, y: 0.91027856, z: 0.09701791}
+  - jointId: 5
+    normalizedPosition: {x: -0.6008468, y: 0.70680666, z: 0.03321832}
+  - jointId: 6
+    normalizedPosition: {x: -0.40519723, y: 0.36154768, z: -0.07577998}
+  - jointId: 7
+    normalizedPosition: {x: -0.294851, y: 0.27991635, z: -0.13891807}
+  - jointId: 8
+    normalizedPosition: {x: 0.35046765, y: 0.8800577, z: 0.18908422}
+  - jointId: 9
+    normalizedPosition: {x: 0.58156455, y: 0.5728734, z: 0.30363676}
+  - jointId: 10
+    normalizedPosition: {x: 0.4509012, y: 0.27633297, z: 0.10630999}
+  - jointId: 11
+    normalizedPosition: {x: 0.3343404, y: 0.22630224, z: 0.0057731164}
+  - jointId: 12
+    normalizedPosition: {x: -0.09691139, y: 0.012990793, z: -0.07188413}
+  - jointId: 13
+    normalizedPosition: {x: -0.24169846, y: -0.5607379, z: -0.22919202}
+  - jointId: 14
+    normalizedPosition: {x: -0.31023785, y: -1.3456695, z: -0.3763694}
+  - jointId: 15
+    normalizedPosition: {x: -0.1914164, y: -1.3494436, z: -0.41157553}
+  - jointId: 16
+    normalizedPosition: {x: 0.08850912, y: -0.0032661133, z: -0.068574674}
+  - jointId: 17
+    normalizedPosition: {x: 0.2061365, y: -0.6048394, z: -0.116895184}
+  - jointId: 18
+    normalizedPosition: {x: 0.0610986, y: -1.4209672, z: -0.096154265}
+  - jointId: 19
+    normalizedPosition: {x: 0.12642904, y: -1.4360843, z: -0.23414563}
+  - jointId: 20
+    normalizedPosition: {x: 0.02637744, y: 0.9823483, z: 0.18519193}
+  - jointId: 21
+    normalizedPosition: {x: -0.22964503, y: 0.10955348, z: -0.26046377}
+  - jointId: 22
+    normalizedPosition: {x: -0.35921255, y: 0.12001208, z: -0.079219826}
+  - jointId: 23
+    normalizedPosition: {x: 0.27629274, y: 0.035046782, z: -0.0892962}
+  - jointId: 24
+    normalizedPosition: {x: 0.28412583, y: 0.30438954, z: -0.11448279}

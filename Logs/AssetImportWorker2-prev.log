@@ -1,0 +1,677 @@
+Using pre-set license
+Built from '2022.3/staging' branch; Version is '2022.3.62f1 (4af31df58517) revision 4911901'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'pt' Physical Memory: 65276 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2022.3.62f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker2
+-projectPath
+C:/Users/Jailson S/Documents/Dilis/SempreLivre-SeJogaNoRitmo
+-logFile
+Logs/AssetImportWorker2.log
+-srvPort
+61995
+Successfully changed project path to: C:/Users/Jailson S/Documents/Dilis/SempreLivre-SeJogaNoRitmo
+C:/Users/Jailson S/Documents/Dilis/SempreLivre-SeJogaNoRitmo
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [25452]  Target information:
+
+Player connection [25452]  * "[IP] 172.29.192.1 [Port] 0 [Flags] 2 [Guid] 835764789 [EditorId] 835764789 [Version] 1048832 [Id] WindowsEditor(7,Jailson) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [25452]  * "[IP] 192.168.0.6 [Port] 0 [Flags] 2 [Guid] 835764789 [EditorId] 835764789 [Version] 1048832 [Id] WindowsEditor(7,Jailson) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [25452] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [25452] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+Refreshing native plugins compatible for Editor in 25.41 ms, found 14 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2022.3.62f1 (4af31df58517)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.62f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Jailson S/Documents/Dilis/SempreLivre-SeJogaNoRitmo/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4050 Laptop GPU (ID=0x28a1)
+    Vendor:   NVIDIA
+    VRAM:     5921 MB
+    Driver:   32.0.15.8157
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.62f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.62f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.62f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56944
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.62f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.62f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.62f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.009645 seconds.
+- Loaded All Assemblies, in  0.314 seconds
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 243 ms
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.521 seconds
+Domain Reload Profiling: 834ms
+	BeginReloadAssembly (98ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (27ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (51ms)
+	LoadAllAssembliesAndSetupDomain (128ms)
+		LoadAssemblies (97ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (126ms)
+			TypeCache.Refresh (125ms)
+				TypeCache.ScanAssembly (111ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (521ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (478ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (316ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (2ms)
+			ProcessInitializeOnLoadAttributes (112ms)
+			ProcessInitializeOnLoadMethodAttributes (44ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Caller must complete domain reload
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.557 seconds
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.523 seconds
+Domain Reload Profiling: 1079ms
+	BeginReloadAssembly (110ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (3ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (17ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (34ms)
+	LoadAllAssembliesAndSetupDomain (379ms)
+		LoadAssemblies (268ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (175ms)
+			TypeCache.Refresh (152ms)
+				TypeCache.ScanAssembly (136ms)
+			ScanForSourceGeneratedMonoScriptInfo (15ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (524ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (389ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (17ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (54ms)
+			ProcessInitializeOnLoadAttributes (289ms)
+			ProcessInitializeOnLoadMethodAttributes (20ms)
+			AfterProcessingInitializeOnLoad (6ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Refreshing native plugins compatible for Editor in 14.65 ms, found 14 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3920 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 29 unused Assets / (308.9 KB). Loaded Objects now: 4384.
+Memory consumption went from 160.2 MB to 159.9 MB.
+Total: 3.544500 ms (FindLiveObjects: 0.303100 ms CreateObjectMapping: 0.154100 ms MarkObjects: 2.821900 ms  DeleteObjects: 0.263600 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: 9a22284fe3817be447336de3de66b15e -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 9777.474021 seconds.
+  path: Assets/JustDance/Data/Steps/imgs/poses/Pose_004 1.png
+  artifactKey: Guid(479951efdcb5dcc4ba31fd38a016692c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/imgs/poses/Pose_004 1.png using Guid(479951efdcb5dcc4ba31fd38a016692c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '9f0223a2fa55bd40c04362a884bc2643') in 0.083919 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/JustDance/Data/Steps/imgs/poses/Pose_778 1.png
+  artifactKey: Guid(f42b08554ad1f2846902afb4bbd8674d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/imgs/poses/Pose_778 1.png using Guid(f42b08554ad1f2846902afb4bbd8674d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '89a463b7b28e364d6eb4c52c665c25ce') in 0.012680 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 36.943007 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo1.asset
+  artifactKey: Guid(62159d55246467645b3a07a047fd0096) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo1.asset using Guid(62159d55246467645b3a07a047fd0096) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '2cc9871a8413e7340d32624d2a78e745') in 0.002086 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 50.837278 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo2.asset
+  artifactKey: Guid(a96bce0a91b7f0d4db6a646b3ab16e24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo2.asset using Guid(a96bce0a91b7f0d4db6a646b3ab16e24) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '22f0bcc9985feee49e763623da855a5c') in 0.001660 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 27.424716 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo3.asset
+  artifactKey: Guid(9af5a4a8c36891e498230b74653adc93) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo3.asset using Guid(9af5a4a8c36891e498230b74653adc93) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '88929c9cd1b60a840417a7558bcbfb34') in 0.001348 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 7.684446 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo4.asset
+  artifactKey: Guid(ac35c369a21c51743ae442dfd0606a03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo4.asset using Guid(ac35c369a21c51743ae442dfd0606a03) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '9b7ad02ba4e267dcd06cf0c6ac3b0ada') in 0.001525 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 19.714967 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo5.asset
+  artifactKey: Guid(d80bbf35fa98be349a7d13934b7d5caa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo5.asset using Guid(d80bbf35fa98be349a7d13934b7d5caa) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'fde40586760a4a0855cd34a336f33dd6') in 0.001458 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 25.943521 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo6.asset
+  artifactKey: Guid(6be689db435214c4f9e0706d05464950) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo6.asset using Guid(6be689db435214c4f9e0706d05464950) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '114da5d77247d17b8ea6fbe070ad1e6d') in 0.001556 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 18.843940 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo7.asset
+  artifactKey: Guid(679d62618a852914ca3615387d872aa6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo7.asset using Guid(679d62618a852914ca3615387d872aa6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '47bddce7d9702b6c90c5b10d33666938') in 0.001493 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 9.548974 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo8.asset
+  artifactKey: Guid(8d5cc2016de1b85438693fcf6479bfbc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo8.asset using Guid(8d5cc2016de1b85438693fcf6479bfbc) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '01a2ec812cf4d8333c22bffdfcd5a6db') in 0.001452 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 31.139498 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo9.asset
+  artifactKey: Guid(769a18cda8b91ab428cd78391db6a28c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo9.asset using Guid(769a18cda8b91ab428cd78391db6a28c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '5930b57f0bde1748e0d66f5ada2ded7a') in 0.001368 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 12.191183 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo10.asset
+  artifactKey: Guid(4fc65ee0fd2f15441b313a513cd0c111) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo10.asset using Guid(4fc65ee0fd2f15441b313a513cd0c111) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '4b7da38d0b39852bdf558b2aefaf79de') in 0.001553 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 13.266658 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo11.asset
+  artifactKey: Guid(8364c5a533130bf4583b431ec077afa2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo11.asset using Guid(8364c5a533130bf4583b431ec077afa2) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'cdbeab9c3c33224a206c5b2eda2b3e1e') in 0.001902 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 10.688600 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo12.asset
+  artifactKey: Guid(b6ff4f696f6b93e4399c90add8498d45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo12.asset using Guid(b6ff4f696f6b93e4399c90add8498d45) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '8c5252f1ef5662c4844964fbdd6b54de') in 0.001403 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 7.573163 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo13.asset
+  artifactKey: Guid(bab42869dc08b184cbaadee679696019) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo13.asset using Guid(bab42869dc08b184cbaadee679696019) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '9a9964fb56529afb1122f68032e22ce8') in 0.002331 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 6.323042 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo14.asset
+  artifactKey: Guid(874388c9562e5bc46a41bd92f0becaa4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo14.asset using Guid(874388c9562e5bc46a41bd92f0becaa4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'b2c9ee388454b63cbdf149ca9781a879') in 0.001758 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 9.111454 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo15.asset
+  artifactKey: Guid(a446bd4beab3da341b4bdf99902e681c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo15.asset using Guid(a446bd4beab3da341b4bdf99902e681c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '7c41002cab5afb14837f6a6c1d6286e7') in 0.001513 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 6.605468 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo16.asset
+  artifactKey: Guid(c09d0f59297f81240b060b826e0d72db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo16.asset using Guid(c09d0f59297f81240b060b826e0d72db) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'eb9691c5667d49157be5db864cb5bb3d') in 0.001500 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 11.853136 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Galope_-_Passo17.asset
+  artifactKey: Guid(f004a358ece5ef6449326d37e9cd96f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Galope_-_Passo17.asset using Guid(f004a358ece5ef6449326d37e9cd96f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'c5130fb877ad56061cf3d7188be8f427') in 0.001614 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 29.174362 seconds.
+  path: Assets/JustDance/Data/Choreographies/Galope.asset
+  artifactKey: Guid(b6c4c71f56c2c80408fe62bdff418be6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Choreographies/Galope.asset using Guid(b6c4c71f56c2c80408fe62bdff418be6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '059790e8548b6956edef2516830250f6') in 0.005346 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 23
+========================================================================
+Received Prepare
+Caller must complete domain reload
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.383 seconds
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.710 seconds
+Domain Reload Profiling: 1090ms
+	BeginReloadAssembly (129ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (6ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (29ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (24ms)
+	LoadAllAssembliesAndSetupDomain (195ms)
+		LoadAssemblies (246ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (14ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (710ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (317ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (14ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (47ms)
+			ProcessInitializeOnLoadAttributes (230ms)
+			ProcessInitializeOnLoadMethodAttributes (18ms)
+			AfterProcessingInitializeOnLoad (5ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (5ms)
+Refreshing native plugins compatible for Editor in 10.94 ms, found 14 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3832 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 24 unused Assets / (280.5 KB). Loaded Objects now: 4396.
+Memory consumption went from 144.4 MB to 144.1 MB.
+Total: 2.584400 ms (FindLiveObjects: 0.230900 ms CreateObjectMapping: 0.112100 ms MarkObjects: 2.150300 ms  DeleteObjects: 0.089800 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: 9a22284fe3817be447336de3de66b15e -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 138.939675 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo1.asset
+  artifactKey: Guid(6f968e332960fae4186393c5e64ba29e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo1.asset using Guid(6f968e332960fae4186393c5e64ba29e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'bda94481cca8a775fb3fbd3fb92683a6') in 0.013200 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 29.702670 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo2.asset
+  artifactKey: Guid(4ccebe1133f84fd45b372639d93587a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo2.asset using Guid(4ccebe1133f84fd45b372639d93587a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'e5a7e8b9371be7d743d349cffde54e70') in 0.001432 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 15.191431 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo3.asset
+  artifactKey: Guid(e08edd93a3a99e14fb69e2cad5555952) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo3.asset using Guid(e08edd93a3a99e14fb69e2cad5555952) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'f95701c8ae1983f9e0d3e4aa0041f287') in 0.001536 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 53.148212 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo3.asset
+  artifactKey: Guid(e08edd93a3a99e14fb69e2cad5555952) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo3.asset using Guid(e08edd93a3a99e14fb69e2cad5555952) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'f359b8af973157c5a161613a3806c56c') in 0.001598 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 22.059508 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo5.asset
+  artifactKey: Guid(7a040e896e5cdf84781112d3f785933b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo5.asset using Guid(7a040e896e5cdf84781112d3f785933b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'e976138f3bd9d897fed5722557a1d4fe') in 0.001642 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 9.298850 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo6.asset
+  artifactKey: Guid(721079f84e029f847ac38495ea90d927) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo6.asset using Guid(721079f84e029f847ac38495ea90d927) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '11465354108a40b075278baa99f7c482') in 0.001380 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 7.633354 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo7.asset
+  artifactKey: Guid(6ffbc74f2f768a74d85d7c08619af82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo7.asset using Guid(6ffbc74f2f768a74d85d7c08619af82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '133862343f4a2fc0f492890ae9d69de3') in 0.001655 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 9.603038 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo8.asset
+  artifactKey: Guid(1fde482a67989e3488f2303e23be30f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo8.asset using Guid(1fde482a67989e3488f2303e23be30f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '11979f5d6a6161f25a93d489730022bb') in 0.001723 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 5.582619 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo9.asset
+  artifactKey: Guid(7d877faac666fb74fae8d0b86be7b963) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo9.asset using Guid(7d877faac666fb74fae8d0b86be7b963) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '17e73c3cc38ac1793568c1a50e1e73cf') in 0.001567 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 15.384141 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo10.asset
+  artifactKey: Guid(f0af8b8b81b61e74a93115f676d54e77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo10.asset using Guid(f0af8b8b81b61e74a93115f676d54e77) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '9861f22595c1a9b67a95c734db143796') in 0.001562 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 12.056510 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo11.asset
+  artifactKey: Guid(5f56f2c14656a2747bc93ff55a95d2bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo11.asset using Guid(5f56f2c14656a2747bc93ff55a95d2bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'b6c87030ae5bf1775d388cbec16f6c3f') in 0.001543 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 11.986079 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo12.asset
+  artifactKey: Guid(8407cf0d69c494740b4aaf49c5e241a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo12.asset using Guid(8407cf0d69c494740b4aaf49c5e241a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '5d663bd34f44d0992ccc50db4a336435') in 0.001352 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 14.965417 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo13.asset
+  artifactKey: Guid(0a070ef8e61a49146bbd725ec97f645c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo13.asset using Guid(0a070ef8e61a49146bbd725ec97f645c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '66e6f775cec5341ef74de20cc11feed1') in 0.001480 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 46.514038 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Xote_-_Passo14.asset
+  artifactKey: Guid(76332adbd1883ba4fafa826f0602e7f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Xote_-_Passo14.asset using Guid(76332adbd1883ba4fafa826f0602e7f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '688e1ae6cd9247fac6a251e789508a60') in 0.001454 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 125.679080 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Forro-Passo1.asset
+  artifactKey: Guid(e5d29d7238687d343b434ccc488e79c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Forro-Passo1.asset using Guid(e5d29d7238687d343b434ccc488e79c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '01813bb8a5cb029add61b54aa83b5737') in 0.002246 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.003473 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Forro-Passo3.asset
+  artifactKey: Guid(cca956b513384d349bd7a84075fcb1aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Forro-Passo3.asset using Guid(cca956b513384d349bd7a84075fcb1aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: 'a85143ad6bf7c1f95517cb70f3ee0fb1') in 0.001678 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.003261 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Forro-Passo4.asset
+  artifactKey: Guid(350b990d3c076904398a09018b5ec0b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Forro-Passo4.asset using Guid(350b990d3c076904398a09018b5ec0b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '52d3a195e5fbb9b0a38a422b7c1e8ee4') in 0.001332 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000040 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Forro-Passo7.asset
+  artifactKey: Guid(2b5394b58e8561a42ba1c3cd3d3210db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Forro-Passo7.asset using Guid(2b5394b58e8561a42ba1c3cd3d3210db) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '696277b9748d656797b1b9d60c6d97bb') in 0.001230 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000012 seconds.
+  path: Assets/JustDance/Data/Steps/Step_Forro-Passo8.asset
+  artifactKey: Guid(9641ff2ecdc5277419af7985f0cf5016) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/JustDance/Data/Steps/Step_Forro-Passo8.asset using Guid(9641ff2ecdc5277419af7985f0cf5016) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '5a80dc430f7714f7d577913b4bc9cf93') in 0.001418 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Prepare
+Caller must complete domain reload
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.410 seconds
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.749 seconds
+Domain Reload Profiling: 1156ms
+	BeginReloadAssembly (130ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (4ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (26ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (26ms)
+	LoadAllAssembliesAndSetupDomain (217ms)
+		LoadAssemblies (272ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (15ms)
+			TypeCache.Refresh (7ms)
+				TypeCache.ScanAssembly (0ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (749ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (326ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (17ms)
+			SetLoadedEditorAssemblies (2ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (50ms)
+			ProcessInitializeOnLoadAttributes (230ms)
+			ProcessInitializeOnLoadMethodAttributes (20ms)
+			AfterProcessingInitializeOnLoad (7ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (5ms)
+Refreshing native plugins compatible for Editor in 11.79 ms, found 14 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3832 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 24 unused Assets / (280.6 KB). Loaded Objects now: 4400.
+Memory consumption went from 144.4 MB to 144.1 MB.
+Total: 2.651700 ms (FindLiveObjects: 0.218800 ms CreateObjectMapping: 0.099400 ms MarkObjects: 2.258700 ms  DeleteObjects: 0.073700 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: 9a22284fe3817be447336de3de66b15e -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+TcpMessagingSession - receive error: operation aborted. errorcode: 995, details: A operação de E/S foi anulada devido a uma saída de thread ou a uma requisição de aplicativo.
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0

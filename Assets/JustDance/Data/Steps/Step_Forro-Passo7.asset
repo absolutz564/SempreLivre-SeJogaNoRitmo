@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stepName: Forro-Passo7
   description: 
-  previewSprite: {fileID: 21300000, guid: 78a7ffab9e6d9df46b0c0c8341b50b9e, type: 3}
+  previewSprite: {fileID: 21300000, guid: ff5fb35e25dad5643926d38280c8b1fc, type: 3}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.8
   tolerance: 0.45

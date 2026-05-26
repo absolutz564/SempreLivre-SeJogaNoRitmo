@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Video;
 using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
 /// Controlador principal do gameplay de dança.
-/// Suporta 1 ou 2 jogadores — lê GameSession.PlayerCount no início de cada partida.
+/// Suporta 1 ou 2 jogadores. O áudio vem embutido no VideoClip da coreografia.
 /// </summary>
 public class DanceController : MonoBehaviour
 {
@@ -14,10 +15,10 @@ public class DanceController : MonoBehaviour
     public DanceChoreography choreography;
 
     [Header("Referências")]
-    public UnityEngine.AudioSource musicSource;
-    public SkeletonVisualizer       skeletonVisualizer;
-    public DanceHUD                 hud;
-    public DanceVideoRecorder       videoRecorder;
+    public VideoPlayer        danceVideoPlayer;
+    public SkeletonVisualizer skeletonVisualizer;
+    public DanceHUD           hud;
+    public DanceVideoRecorder videoRecorder;
 
     [Header("Pontuação — um ScoreManager por jogador (máx 2)")]
     public ScoreManager[] scoreManagers = new ScoreManager[2];
@@ -27,21 +28,19 @@ public class DanceController : MonoBehaviour
     public float evaluationRate = 10f;
 
     [Header("Precisão de Avaliação")]
-    [Tooltip("Tolerância padrão de distância por joint — menor = mais rigoroso (sobrescrita pelo campo Tolerance de cada DanceStep)")]
+    [Tooltip("Tolerância padrão de distância por joint — menor = mais rigoroso")]
     public float defaultTolerance = 0.15f;
 
-    [Tooltip("Score mínimo para PERFEITO")] [Range(0f, 1f)] public float scorePerfeito = 0.85f;
-    [Tooltip("Score mínimo para BOM")]      [Range(0f, 1f)] public float scoreBom       = 0.55f;
+    [Tooltip("Score mínimo para PERFEITO")] [Range(0f, 1f)] public float scorePerfeito = 0.68f;
+    [Tooltip("Score mínimo para BOM")]      [Range(0f, 1f)] public float scoreBom       = 0.38f;
 
     // Estado interno
     private float  _musicTime;
     private float  _gameTimer;
-    private bool   _hasClip;
     private bool   _isPlaying;
-    private double _dspStartTime;
-    private DanceChoreography.StepEntry                     _currentEntry;
-    private Dictionary<KinectBodyTracker.JointId, Vector3> _referenceJoints;
-    private float _nextEvalTime;
+    private DanceChoreography.StepEntry                      _currentEntry;
+    private Dictionary<KinectBodyTracker.JointId, Vector3>  _referenceJoints;
+    private float  _nextEvalTime;
     private float[] _stepBestScore = new float[2];
 
     public float             MusicTime    => _musicTime;
@@ -76,15 +75,29 @@ public class DanceController : MonoBehaviour
             yield return null;
         }
 
-        // 2. Preparar HUD e scores
+        // 2. Aguardar rastreamento do corpo
+        hud?.HideMessage();
+        hud?.ShowTrackingWait();
+        while (!AllPlayersTracked(players))
+            yield return null;
+        hud?.HideTrackingWait();
+
+        // 3. Preparar HUD e scores
         hud?.SetupForPlayerCount(players);
         for (int p = 0; p < players && p < scoreManagers.Length; p++)
             scoreManagers[p]?.ResetScore();
         for (int p = 0; p < 2; p++) _stepBestScore[p] = 0f;
 
-        // 3. Countdown
+        // 3. Countdown — prepara o vídeo durante a contagem para evitar stutter
         hud?.ShowMessage("Prepare-se!");
         videoRecorder?.StartRecording();
+        if (danceVideoPlayer != null && choreography.videoClip != null)
+        {
+            danceVideoPlayer.clip        = choreography.videoClip;
+            danceVideoPlayer.playOnAwake = false;
+            danceVideoPlayer.isLooping   = false;
+            danceVideoPlayer.Prepare();
+        }
         for (int i = 3; i >= 1; i--)
         {
             hud?.ShowCountdown(i);
@@ -92,23 +105,12 @@ public class DanceController : MonoBehaviour
         }
         hud?.HideCountdown();
 
-        // 4. Música
-        _hasClip   = choreography.musicClip != null;
+        // 4. Inicia vídeo (aguarda preparação se ainda não concluída)
         _gameTimer = 0f;
-        if (_hasClip)
+        if (danceVideoPlayer != null && choreography.videoClip != null)
         {
-            musicSource.clip = choreography.musicClip;
-            // Aguarda o clip terminar de carregar para evitar delay de buffering
-            while (musicSource.clip.loadState == AudioDataLoadState.Loading)
-                yield return null;
-            // Agenda 100 ms à frente — dá tempo ao hardware de áudio iniciar sem dessincronizar
-            _dspStartTime = AudioSettings.dspTime + 0.1;
-            musicSource.PlayScheduled(_dspStartTime);
-            yield return new WaitUntil(() => AudioSettings.dspTime >= _dspStartTime);
-        }
-        else
-        {
-            _dspStartTime = AudioSettings.dspTime;
+            yield return new WaitUntil(() => danceVideoPlayer.isPrepared);
+            danceVideoPlayer.Play();
         }
         _isPlaying = true;
         hud?.HideMessage();
@@ -116,9 +118,16 @@ public class DanceController : MonoBehaviour
         // 5. Loop de gameplay
         while (_isPlaying)
         {
-            _musicTime = _hasClip
-                ? (float)(AudioSettings.dspTime - _dspStartTime)
-                : (_gameTimer += Time.deltaTime);
+            if (danceVideoPlayer != null && danceVideoPlayer.isPlaying)
+            {
+                _musicTime = (float)danceVideoPlayer.time;
+                _gameTimer = _musicTime;
+            }
+            else
+            {
+                _gameTimer += Time.deltaTime;
+                _musicTime  = _gameTimer;
+            }
 
             if (_musicTime >= choreography.TotalDuration)
             {
@@ -126,13 +135,14 @@ public class DanceController : MonoBehaviour
                 break;
             }
 
-            // stepTime desconta o offset do primeiro beat (silêncio/intro da música)
             float stepTime = _musicTime - choreography.firstBeatOffset;
 
             var activeEntry = choreography.GetActiveStep(stepTime);
 
             if (activeEntry != null && activeEntry != _currentEntry)
             {
+                if (_currentEntry != null)
+                    FinalizeCurrentStep();
                 _currentEntry    = activeEntry;
                 _referenceJoints = activeEntry.step?.ToDictionary();
                 for (int p = 0; p < 2; p++) _stepBestScore[p] = 0f;
@@ -165,7 +175,7 @@ public class DanceController : MonoBehaviour
 
         // 6. Fim
         yield return new WaitForSeconds(1f);
-        musicSource?.Stop();
+        danceVideoPlayer?.Stop();
         videoRecorder?.StopRecording();
 
         for (int p = 0; p < players && p < scoreManagers.Length; p++)
@@ -228,8 +238,20 @@ public class DanceController : MonoBehaviour
     public void StopDance()
     {
         _isPlaying = false;
-        musicSource?.Stop();
+        danceVideoPlayer?.Stop();
         StopAllCoroutines();
         videoRecorder?.StopRecording();
+        hud?.HideTrackingWait();
+    }
+
+    bool AllPlayersTracked(int playerCount)
+    {
+        var tracker = KinectBodyTracker.Instance;
+        if (tracker == null || !tracker.IsConnected) return false;
+        for (int p = 0; p < playerCount; p++)
+        {
+            if (tracker.GetNormalizedJoints(p) == null) return false;
+        }
+        return true;
     }
 }

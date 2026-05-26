@@ -32,7 +32,6 @@ public static class MultiPlayerUIBuilder
 
         BuildPlayerSelectModal(canvas.transform, ctrl, canvasRect);
         var huds = BuildPlayerHUDs(hud.transform, canvasRect);
-        BuildResultsPanel2P(hud.transform, canvasRect);
         WireScoreManagers(ctrl);
         WireHUD(hud, huds, ctrl);
 
@@ -213,77 +212,6 @@ public static class MultiPlayerUIBuilder
     }
 
     // ── ResultsPanel 2P ───────────────────────────────────────────────────────
-
-    static void BuildResultsPanel2P(Transform hudParent, RectTransform canvasRect)
-    {
-        if (hudParent.Find("ResultsPanel2P") != null) return;
-
-        var root = NewRect("ResultsPanel2P", hudParent);
-        root.anchorMin = new Vector2(0.1f, 0.15f);
-        root.anchorMax = new Vector2(0.9f, 0.88f);
-        root.offsetMin = root.offsetMax = Vector2.zero;
-
-        var bg = root.gameObject.AddComponent<Image>();
-        bg.color = new Color(0.05f, 0.05f, 0.1f, 0.95f);
-
-        // Título "RESULTADO"
-        AddLabel(root, "Title", "RESULTADO", new Vector2(0.1f, 0.80f), new Vector2(0.9f, 1.0f), 42f, Color.white);
-
-        // Vencedor
-        var winnerGO = NewRect("WinnerText", root);
-        winnerGO.anchorMin = new Vector2(0.1f, 0.63f);
-        winnerGO.anchorMax = new Vector2(0.9f, 0.82f);
-        winnerGO.offsetMin = winnerGO.offsetMax = Vector2.zero;
-        var winnerTmp = winnerGO.gameObject.AddComponent<TextMeshProUGUI>();
-        winnerTmp.text      = "";
-        winnerTmp.fontSize  = 34f;
-        winnerTmp.alignment = TextAlignmentOptions.Center;
-        winnerTmp.color     = new Color(1f, 0.8f, 0f);
-        winnerTmp.fontStyle = FontStyles.Bold;
-
-        // Colunas P1 / P2
-        AddLabel(root, "LabelP1", "JOGADOR 1", new Vector2(0.05f, 0.50f), new Vector2(0.48f, 0.64f), 22f, new Color(0.2f, 0.55f, 1f));
-        var scoreP1GO = NewRect("ScoreP1", root);
-        scoreP1GO.anchorMin = new Vector2(0.05f, 0.30f); scoreP1GO.anchorMax = new Vector2(0.48f, 0.52f);
-        scoreP1GO.offsetMin = scoreP1GO.offsetMax = Vector2.zero;
-        var scoreP1Tmp = scoreP1GO.gameObject.AddComponent<TextMeshProUGUI>();
-        scoreP1Tmp.text = "0"; scoreP1Tmp.fontSize = 38f;
-        scoreP1Tmp.alignment = TextAlignmentOptions.Center; scoreP1Tmp.color = Color.white;
-        var gradeP1GO = NewRect("GradeP1", root);
-        gradeP1GO.anchorMin = new Vector2(0.05f, 0.13f); gradeP1GO.anchorMax = new Vector2(0.48f, 0.32f);
-        gradeP1GO.offsetMin = gradeP1GO.offsetMax = Vector2.zero;
-        var gradeP1Tmp = gradeP1GO.gameObject.AddComponent<TextMeshProUGUI>();
-        gradeP1Tmp.text = "-"; gradeP1Tmp.fontSize = 32f;
-        gradeP1Tmp.alignment = TextAlignmentOptions.Center; gradeP1Tmp.color = Color.yellow;
-
-        AddLabel(root, "LabelP2", "JOGADOR 2", new Vector2(0.52f, 0.50f), new Vector2(0.95f, 0.64f), 22f, new Color(1f, 0.45f, 0.1f));
-        var scoreP2GO = NewRect("ScoreP2", root);
-        scoreP2GO.anchorMin = new Vector2(0.52f, 0.30f); scoreP2GO.anchorMax = new Vector2(0.95f, 0.52f);
-        scoreP2GO.offsetMin = scoreP2GO.offsetMax = Vector2.zero;
-        var scoreP2Tmp = scoreP2GO.gameObject.AddComponent<TextMeshProUGUI>();
-        scoreP2Tmp.text = "0"; scoreP2Tmp.fontSize = 38f;
-        scoreP2Tmp.alignment = TextAlignmentOptions.Center; scoreP2Tmp.color = Color.white;
-        var gradeP2GO = NewRect("GradeP2", root);
-        gradeP2GO.anchorMin = new Vector2(0.52f, 0.13f); gradeP2GO.anchorMax = new Vector2(0.95f, 0.32f);
-        gradeP2GO.offsetMin = gradeP2GO.offsetMax = Vector2.zero;
-        var gradeP2Tmp = gradeP2GO.gameObject.AddComponent<TextMeshProUGUI>();
-        gradeP2Tmp.text = "-"; gradeP2Tmp.fontSize = 32f;
-        gradeP2Tmp.alignment = TextAlignmentOptions.Center; gradeP2Tmp.color = Color.yellow;
-
-        // Wire no DanceHUD
-        var hud = Object.FindObjectOfType<DanceHUD>();
-        if (hud != null)
-        {
-            hud.resultsPanel2P  = root.gameObject;
-            hud.finalScoreP1Text = scoreP1Tmp;
-            hud.gradeP1Text      = gradeP1Tmp;
-            hud.finalScoreP2Text = scoreP2Tmp;
-            hud.gradeP2Text      = gradeP2Tmp;
-            hud.winnerText       = winnerTmp;
-        }
-
-        root.gameObject.SetActive(false);
-    }
 
     // ── Wiring ────────────────────────────────────────────────────────────────
 

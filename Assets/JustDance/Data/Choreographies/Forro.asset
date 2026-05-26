@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   songTitle: "Forr\xF3"
   artist: JustDance Dev
-  musicClip: {fileID: 8300000, guid: c4c01c46162fdd54e882c1b7e41251db, type: 3}
   coverArt: {fileID: 0}
+  videoClip: {fileID: 32900000, guid: 91ce9284724b7ad40a68a7a0d57b064e, type: 3}
   bpm: 120
   firstBeatOffset: 0
   steps:

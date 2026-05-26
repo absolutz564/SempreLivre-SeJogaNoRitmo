@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using TMPro;
 using System.IO;
 
@@ -45,10 +46,16 @@ public static class SceneAutoBuilder
         // ── [Game] – lógica central ───────────────────────────────────────────
         var gameGO = new GameObject("[Game]");
         var danceCtrl   = gameGO.AddComponent<DanceController>();
+        var videoPlayer = gameGO.AddComponent<VideoPlayer>();
         var audioSrc    = gameGO.AddComponent<AudioSource>();
         var recorder    = gameGO.AddComponent<DanceVideoRecorder>();
         var uploader    = gameGO.AddComponent<DanceVideoUploader>();
         var skelVis     = gameGO.AddComponent<SkeletonVisualizer>();
+
+        // VideoPlayer — áudio embutido no vídeo, saída pelo AudioSource
+        videoPlayer.playOnAwake      = false;
+        videoPlayer.audioOutputMode  = VideoAudioOutputMode.AudioSource;
+        videoPlayer.SetTargetAudioSource(0, audioSrc);
 
         // Material simples para o SkeletonVisualizer
         var skelMat = new Material(Shader.Find("Hidden/Internal-Colored"));
@@ -57,7 +64,7 @@ public static class SceneAutoBuilder
 
         recorder.uploader = uploader;
 
-        danceCtrl.musicSource        = audioSrc;
+        danceCtrl.danceVideoPlayer   = videoPlayer;
         danceCtrl.skeletonVisualizer = skelVis;
         danceCtrl.videoRecorder      = recorder;
         var sm0 = gameGO.AddComponent<ScoreManager>();
@@ -122,11 +129,17 @@ public static class SceneAutoBuilder
             new Vector2(0.5f,0.5f), new Vector2(0.5f,0.5f), Vector2.zero, new Vector2(640,420));
         var resBg = resultsGO.AddComponent<Image>();
         resBg.color = new Color(0,0,0,0.88f);
-        hud.finalScoreText  = MakeTMP(resultsGO,"FinalScoreText","0",          80,TextAlignmentOptions.Center,Color.yellow,FontStyles.Bold, new Vector2(0, 110));
-        hud.gradeText       = MakeTMP(resultsGO,"GradeText",     "S",         100,TextAlignmentOptions.Center,Color.white, FontStyles.Bold, new Vector2(0, 20));
-        hud.perfectCountText= MakeTMP(resultsGO,"PerfectCount",  "PERFECT x0", 30,TextAlignmentOptions.Left,  Color.white, FontStyles.Normal, new Vector2(-80,-80));
-        hud.greatCountText  = MakeTMP(resultsGO,"GreatCount",    "GREAT x0",   30,TextAlignmentOptions.Left,  Color.white, FontStyles.Normal, new Vector2(-80,-120));
-        hud.missCountText   = MakeTMP(resultsGO,"MissCount",     "MISS x0",    30,TextAlignmentOptions.Left,  Color.gray,  FontStyles.Normal, new Vector2(-80,-160));
+        hud.finalScoreText   = MakeTMP(resultsGO,"FinalScoreText","0",            80,TextAlignmentOptions.Center,Color.yellow,FontStyles.Bold,   new Vector2(0,  130));
+        hud.perfectCountText = MakeTMP(resultsGO,"PerfectCount",  "PERFEITO x0", 30,TextAlignmentOptions.Center,Color.white, FontStyles.Normal, new Vector2(0,   55));
+        hud.bomCountText     = MakeTMP(resultsGO,"BomCount",      "BOM x0",      30,TextAlignmentOptions.Center,Color.white, FontStyles.Normal, new Vector2(0,   15));
+        hud.errorsCountText  = MakeTMP(resultsGO,"ErrorsCount",   "ERROS x0",    30,TextAlignmentOptions.Center,Color.gray,  FontStyles.Normal, new Vector2(0,  -25));
+        hud.precisionText    = MakeTMP(resultsGO,"PrecisionText", "0%",          36,TextAlignmentOptions.Center,Color.cyan,  FontStyles.Bold,   new Vector2(0,  -75));
+        var resIconGO  = NewUIObject("ResultIcon", resultsGO,
+            new Vector2(0.5f,0.5f), new Vector2(0.5f,0.5f), new Vector2(0f,-155f), new Vector2(200f,80f));
+        var resIconImg = resIconGO.AddComponent<Image>();
+        resIconImg.preserveAspect = true;
+        resIconGO.SetActive(false);
+        hud.resultIconImage = resIconImg;
         resultsGO.SetActive(false);
         hud.resultsPanel = resultsGO;
 

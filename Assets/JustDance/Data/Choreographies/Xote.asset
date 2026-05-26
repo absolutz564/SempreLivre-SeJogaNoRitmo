@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f223d0ee7ac704db5333dad7610eea, type: 3}
+  m_Name: Xote
+  m_EditorClassIdentifier: 
+  songTitle: Galope
+  artist: JustDance Dev
+  coverArt: {fileID: 0}
+  videoClip: {fileID: 32900000, guid: 411cf5bee724c34448df1c5810e5f8b8, type: 3}
+  bpm: 120
+  firstBeatOffset: 0
+  steps:
+  - step: {fileID: 11400000, guid: 6f968e332960fae4186393c5e64ba29e, type: 2}
+    startTime: 1.85
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 4ccebe1133f84fd45b372639d93587a0, type: 2}
+    startTime: 4.116667
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: e08edd93a3a99e14fb69e2cad5555952, type: 2}
+    startTime: 6.483333
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 1bcc12bbeb1717c45a49f95296ad05a3, type: 2}
+    startTime: 10.266666
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 7a040e896e5cdf84781112d3f785933b, type: 2}
+    startTime: 12.366667
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 721079f84e029f847ac38495ea90d927, type: 2}
+    startTime: 14.316667
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 6ffbc74f2f768a74d85d7c08619af82f, type: 2}
+    startTime: 16.9
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 1fde482a67989e3488f2303e23be30f9, type: 2}
+    startTime: 20.233334
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 7d877faac666fb74fae8d0b86be7b963, type: 2}
+    startTime: 21.633333
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: f0af8b8b81b61e74a93115f676d54e77, type: 2}
+    startTime: 23.983334
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 5f56f2c14656a2747bc93ff55a95d2bf, type: 2}
+    startTime: 25.883333
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 8407cf0d69c494740b4aaf49c5e241a1, type: 2}
+    startTime: 27.383333
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 0a070ef8e61a49146bbd725ec97f645c, type: 2}
+    startTime: 29.416666
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 76332adbd1883ba4fafa826f0602e7f0, type: 2}
+    startTime: 31.916666
+    windowBefore: 0.5
+    windowAfter: 0.3

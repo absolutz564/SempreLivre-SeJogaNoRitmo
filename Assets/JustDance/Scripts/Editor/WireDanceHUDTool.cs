@@ -64,11 +64,17 @@ public static class WireDanceHUDTool
         resultsPanel.SetActive(false);
         hud.resultsPanel = resultsPanel;
 
-        hud.finalScoreText   = EnsureTMP(resultsPanel, "FinalScoreText", "0",          80,  Color.yellow, FontStyles.Bold,   new Vector2(0,  110));
-        hud.gradeText        = EnsureTMP(resultsPanel, "GradeText",      "S",         100,  Color.white,  FontStyles.Bold,   new Vector2(0,   20));
-        hud.perfectCountText = EnsureTMP(resultsPanel, "PerfectCount",   "PERFECT x0", 30,  Color.white,  FontStyles.Normal, new Vector2(-80, -80));
-        hud.greatCountText   = EnsureTMP(resultsPanel, "GreatCount",     "GREAT x0",   30,  Color.white,  FontStyles.Normal, new Vector2(-80,-120));
-        hud.missCountText    = EnsureTMP(resultsPanel, "MissCount",      "MISS x0",    30,  Color.gray,   FontStyles.Normal, new Vector2(-80,-160));
+        hud.finalScoreText   = EnsureTMP(resultsPanel, "FinalScoreText", "0",            80, Color.yellow, FontStyles.Bold,   new Vector2(0,  130));
+        hud.perfectCountText = EnsureTMP(resultsPanel, "PerfectCount",   "PERFEITO x0", 30, Color.white,  FontStyles.Normal, new Vector2(0,   55));
+        hud.bomCountText     = EnsureTMP(resultsPanel, "BomCount",       "BOM x0",      30, Color.white,  FontStyles.Normal, new Vector2(0,   15));
+        hud.errorsCountText  = EnsureTMP(resultsPanel, "ErrorsCount",    "ERROS x0",    30, Color.gray,   FontStyles.Normal, new Vector2(0,  -25));
+        hud.precisionText    = EnsureTMP(resultsPanel, "PrecisionText",  "0%",          36, Color.cyan,   FontStyles.Bold,   new Vector2(0,  -75));
+        var iconGO  = EnsureChild(resultsPanel, "ResultIcon",
+            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, -155f), new Vector2(200f, 80f));
+        var iconImg = EnsureImage(iconGO, Color.white);
+        iconImg.preserveAspect = true;
+        iconGO.SetActive(false);
+        hud.resultIconImage = iconImg;
 
         // ── BtnJogar ─────────────────────────────────────────────────────────
         if (hudGO.transform.Find("BtnJogar") == null)

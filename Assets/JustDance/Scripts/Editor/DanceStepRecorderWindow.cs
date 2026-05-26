@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using UnityEngine;
+using UnityEngine.Video;
 using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +12,8 @@ using JointId = KinectBodyTracker.JointId;
 ///
 /// FLUXO:
 ///   1. Entre em Play Mode na cena com KinectBodyTracker
-///   2. Carregue o AudioClip da música no campo "Música"
-///   3. Dê Play na música e pause no momento certo
+///   2. Carregue o VideoClip da música no campo "Vídeo"
+///   3. Dê Play e pause no beat desejado — o preview mostra o frame exato
 ///   4. Fique em frente ao Kinect, assuma a pose e clique "Capturar Agora"
 ///   5. Clique "Salvar" — o passo é adicionado à coreografia com o tempo correto
 /// </summary>
@@ -23,10 +24,12 @@ public class DanceStepRecorderWindow : EditorWindow
     string _outputFolder = "Assets/JustDance/Data/Steps";
     float  _duration     = 0.8f;
     float  _tolerance    = 0.45f;
+    Sprite _previewSprite;
 
-    // ── Música ────────────────────────────────────────────────────────────────
-    AudioClip         _musicClip;
-    AudioSource       _previewSource;
+    // ── Vídeo ─────────────────────────────────────────────────────────────────
+    VideoClip      _videoClip;
+    VideoPlayer    _previewPlayer;
+    RenderTexture  _previewTexture;
 
     // ── Coreografia destino ───────────────────────────────────────────────────
     DanceChoreography _targetChoreo;
@@ -38,11 +41,11 @@ public class DanceStepRecorderWindow : EditorWindow
 
     // ── Última captura ────────────────────────────────────────────────────────
     Dictionary<JointId, Vector3> _captured;
-    float  _capturedMusicTime = -1f;
+    float  _capturedVideoTime = -1f;
     string _status      = "Aguardando Play Mode...";
     Color  _statusColor = Color.gray;
 
-    // ── Preview ───────────────────────────────────────────────────────────────
+    // ── Skeleton preview ──────────────────────────────────────────────────────
     const float PreviewW = 200f;
     const float PreviewH = 300f;
 
@@ -75,7 +78,7 @@ public class DanceStepRecorderWindow : EditorWindow
 
     // ── Ciclo de vida ──────────────────────────────────────────────────────────
 
-    void OnDisable() => DestroyPreviewSource();
+    void OnDisable() => DestroyPreviewPlayer();
 
     // ── GUI ───────────────────────────────────────────────────────────────────
 
@@ -89,7 +92,7 @@ public class DanceStepRecorderWindow : EditorWindow
         DrawStatusBar(inPlay, tracker, hasBody);
         EditorGUILayout.Space(6);
 
-        DrawMusicSection(inPlay);
+        DrawVideoSection(inPlay);
         EditorGUILayout.Space(4);
 
         DrawChoreoSection();
@@ -97,9 +100,9 @@ public class DanceStepRecorderWindow : EditorWindow
 
         EditorGUILayout.BeginHorizontal();
 
-        var previewRect = GUILayoutUtility.GetRect(PreviewW, PreviewH,
+        var skeletonRect = GUILayoutUtility.GetRect(PreviewW, PreviewH,
             GUILayout.Width(PreviewW), GUILayout.Height(PreviewH));
-        DrawSkeletonPreview(previewRect,
+        DrawSkeletonPreview(skeletonRect,
             hasBody ? KinectBodyTracker.Instance.GetNormalizedJoints() : _captured);
 
         EditorGUILayout.Space(8);
@@ -131,56 +134,65 @@ public class DanceStepRecorderWindow : EditorWindow
         }
     }
 
-    // ── Seção de música ───────────────────────────────────────────────────────
+    // ── Seção de vídeo ────────────────────────────────────────────────────────
 
-    void DrawMusicSection(bool inPlay)
+    void DrawVideoSection(bool inPlay)
     {
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        GUILayout.Label("Música", EditorStyles.boldLabel);
+        GUILayout.Label("Vídeo", EditorStyles.boldLabel);
 
         EditorGUI.BeginChangeCheck();
-        var newClip = (AudioClip)EditorGUILayout.ObjectField("AudioClip", _musicClip, typeof(AudioClip), false);
+        var newClip = (VideoClip)EditorGUILayout.ObjectField("VideoClip", _videoClip, typeof(VideoClip), false);
         if (EditorGUI.EndChangeCheck())
         {
-            DestroyPreviewSource();
-            _musicClip = newClip;
+            DestroyPreviewPlayer();
+            _videoClip = newClip;
         }
 
-        if (_musicClip != null)
+        if (_videoClip != null)
         {
             if (!inPlay)
             {
-                EditorGUILayout.HelpBox("Entre em Play Mode para controlar a música.", MessageType.Info);
+                EditorGUILayout.HelpBox("Entre em Play Mode para controlar o vídeo.", MessageType.Info);
             }
             else
             {
-                var src = GetOrCreatePreviewSource();
+                var vp = GetOrCreatePreviewPlayer();
 
-                // Botões play/pause/stop
+                // Preview do frame atual
+                if (_previewTexture != null)
+                {
+                    float previewW = position.width - 24f;
+                    float previewH = previewW * 9f / 16f;
+                    previewH = Mathf.Min(previewH, 200f);
+                    var previewRect = GUILayoutUtility.GetRect(previewW, previewH);
+                    GUI.DrawTexture(previewRect, _previewTexture, ScaleMode.ScaleToFit);
+                }
+
+                // Botões play / pause / stop
                 EditorGUILayout.BeginHorizontal();
-                bool playing = src.isPlaying;
+                bool playing = vp.isPlaying;
                 if (GUILayout.Button(playing ? "⏸  Pausar" : "▶  Play", GUILayout.Height(28), GUILayout.Width(90)))
                 {
                     if (playing)
                     {
-                        src.Pause();
+                        vp.Pause();
                     }
                     else
                     {
-                        if (src.clip != _musicClip) { src.clip = _musicClip; src.time = 0f; }
-                        src.Play();
+                        if (vp.clip != _videoClip) { vp.clip = _videoClip; vp.time = 0; }
+                        vp.Play();
                     }
                 }
                 if (GUILayout.Button("⏹  Stop", GUILayout.Height(28), GUILayout.Width(70)))
                 {
-                    src.Stop();
-                    src.clip = null;
+                    vp.Stop();
                 }
                 EditorGUILayout.EndHorizontal();
 
-                // Barra de progresso / seek
-                float total = _musicClip.length;
-                float cur   = src.clip == _musicClip ? src.time : 0f;
+                // Barra de seek
+                float total = (float)_videoClip.length;
+                float cur   = vp.clip == _videoClip ? (float)vp.time : 0f;
 
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label(FormatTime(cur), GUILayout.Width(46));
@@ -189,10 +201,10 @@ public class DanceStepRecorderWindow : EditorWindow
                 float seeked = GUILayout.HorizontalSlider(cur, 0f, total);
                 if (EditorGUI.EndChangeCheck())
                 {
-                    if (src.clip != _musicClip) { src.clip = _musicClip; }
-                    src.time = Mathf.Clamp(seeked, 0f, total - 0.01f);
-                    if (!src.isPlaying) src.Play();
-                    src.Pause();
+                    if (vp.clip != _videoClip) vp.clip = _videoClip;
+                    vp.time = Mathf.Clamp(seeked, 0f, total - 0.01f);
+                    // Retoma a reprodução a partir da nova posição
+                    if (!vp.isPlaying) vp.Play();
                 }
 
                 GUILayout.Label(FormatTime(total), GUILayout.Width(46));
@@ -216,7 +228,7 @@ public class DanceStepRecorderWindow : EditorWindow
             int count = _targetChoreo.steps?.Length ?? 0;
             EditorGUILayout.HelpBox(
                 $"{_targetChoreo.name}  ({count} passo{(count != 1 ? "s" : "")})\n" +
-                "O passo salvo será inserido automaticamente com o tempo da música.",
+                "O passo salvo será inserido automaticamente com o tempo do vídeo.",
                 MessageType.Info);
         }
         EditorGUILayout.EndVertical();
@@ -245,10 +257,12 @@ public class DanceStepRecorderWindow : EditorWindow
     void DrawConfig()
     {
         GUILayout.Label("Configuração", EditorStyles.boldLabel);
-        _stepName     = EditorGUILayout.TextField("Nome",       _stepName);
-        _duration     = EditorGUILayout.Slider("Duração (s)",  _duration,  0.3f, 3f);
-        _tolerance    = EditorGUILayout.Slider("Tolerância",   _tolerance, 0.10f, 0.6f);
-        _outputFolder = EditorGUILayout.TextField("Pasta",     _outputFolder);
+        _stepName     = EditorGUILayout.TextField("Nome",         _stepName);
+        _duration     = EditorGUILayout.Slider("Duração (s)",    _duration,  0.3f, 3f);
+        _tolerance    = EditorGUILayout.Slider("Tolerância",      _tolerance, 0.10f, 0.6f);
+        _previewSprite = (Sprite)EditorGUILayout.ObjectField(
+            "Preview Sprite", _previewSprite, typeof(Sprite), false);
+        _outputFolder = EditorGUILayout.TextField("Pasta",        _outputFolder);
     }
 
     // ── Botões de captura ─────────────────────────────────────────────────────
@@ -314,9 +328,9 @@ public class DanceStepRecorderWindow : EditorWindow
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
-        string timeLabel = _capturedMusicTime >= 0
-            ? $"Tempo: {FormatTime(_capturedMusicTime)}  ({_capturedMusicTime:F3} s)"
-            : "Tempo: —  (música não estava ativa)";
+        string timeLabel = _capturedVideoTime >= 0
+            ? $"Tempo: {FormatTime(_capturedVideoTime)}  ({_capturedVideoTime:F3} s)"
+            : "Tempo: —  (vídeo não estava ativo)";
 
         GUILayout.Label($"Captura pronta  —  {_captured.Count} juntas", EditorStyles.boldLabel);
         GUILayout.Label(timeLabel);
@@ -354,10 +368,10 @@ public class DanceStepRecorderWindow : EditorWindow
         }
         foreach (var kv in joints)
         {
-            var  gs    = ToGUI(kv.Value, rect);
-            bool isHand = kv.Key == JointId.HandLeft || kv.Key == JointId.HandRight;
-            float r    = isHand ? 6f : 3.5f;
-            Color c    = isHand ? Color.yellow : new Color(0.2f, 1f, 0.4f);
+            var   gs    = ToGUI(kv.Value, rect);
+            bool  isHand = kv.Key == JointId.HandLeft || kv.Key == JointId.HandRight;
+            float r     = isHand ? 6f : 3.5f;
+            Color c     = isHand ? Color.yellow : new Color(0.2f, 1f, 0.4f);
             EditorGUI.DrawRect(new Rect(gs.x - r, gs.y - r, r * 2, r * 2), c);
         }
         Handles.EndGUI();
@@ -398,15 +412,14 @@ public class DanceStepRecorderWindow : EditorWindow
 
         _captured = new Dictionary<JointId, Vector3>(joints);
 
-        // Registra o tempo atual da música (se estiver carregada e ativa)
-        _capturedMusicTime = (_previewSource != null
-                               && _previewSource.clip == _musicClip
-                               && _musicClip != null)
-            ? _previewSource.time
+        _capturedVideoTime = (_previewPlayer != null
+                              && _previewPlayer.clip == _videoClip
+                              && _videoClip != null)
+            ? (float)_previewPlayer.time
             : -1f;
 
-        string timeInfo = _capturedMusicTime >= 0
-            ? $"  |  Tempo: {FormatTime(_capturedMusicTime)}"
+        string timeInfo = _capturedVideoTime >= 0
+            ? $"  |  Tempo: {FormatTime(_capturedVideoTime)}"
             : "";
         SetStatus($"Pose capturada! {joints.Count} juntas.{timeInfo} Clique em Salvar.", Color.cyan);
     }
@@ -426,9 +439,10 @@ public class DanceStepRecorderWindow : EditorWindow
         var existing = AssetDatabase.LoadAssetAtPath<DanceStep>(path);
         var asset    = existing != null ? existing : ScriptableObject.CreateInstance<DanceStep>();
 
-        asset.stepName  = _stepName;
-        asset.duration  = _duration;
-        asset.tolerance = _tolerance;
+        asset.stepName     = _stepName;
+        asset.duration     = _duration;
+        asset.tolerance    = _tolerance;
+        asset.previewSprite = _previewSprite;
         asset.FromDictionary(_captured);
 
         if (existing == null)
@@ -436,8 +450,7 @@ public class DanceStepRecorderWindow : EditorWindow
         else
             EditorUtility.SetDirty(asset);
 
-        // Adiciona à coreografia destino com o tempo capturado
-        if (_targetChoreo != null && _capturedMusicTime >= 0f)
+        if (_targetChoreo != null && _capturedVideoTime >= 0f)
         {
             var list = new List<DanceChoreography.StepEntry>(
                 _targetChoreo.steps ?? System.Array.Empty<DanceChoreography.StepEntry>());
@@ -445,7 +458,7 @@ public class DanceStepRecorderWindow : EditorWindow
             list.Add(new DanceChoreography.StepEntry
             {
                 step         = asset,
-                startTime    = _capturedMusicTime,
+                startTime    = _capturedVideoTime,
                 windowBefore = 0.5f,
                 windowAfter  = 0.3f,
             });
@@ -460,38 +473,58 @@ public class DanceStepRecorderWindow : EditorWindow
         EditorUtility.FocusProjectWindow();
         Selection.activeObject = asset;
 
-        string choreoInfo = (_targetChoreo != null && _capturedMusicTime >= 0f)
-            ? $"\nAdicionado a '{_targetChoreo.name}' em {FormatTime(_capturedMusicTime)}"
-            : _capturedMusicTime >= 0f
-                ? $"\nTempo registrado: {FormatTime(_capturedMusicTime)} — arraste para sua DanceChoreography"
+        string choreoInfo = (_targetChoreo != null && _capturedVideoTime >= 0f)
+            ? $"\nAdicionado a '{_targetChoreo.name}' em {FormatTime(_capturedVideoTime)}"
+            : _capturedVideoTime >= 0f
+                ? $"\nTempo registrado: {FormatTime(_capturedVideoTime)} — arraste para sua DanceChoreography"
                 : "";
 
         SetStatus($"Salvo: {path}{choreoInfo}", Color.green);
 
         _stepName  = IncrementName(_stepName);
         _captured  = null;
-        _capturedMusicTime = -1f;
+        _capturedVideoTime = -1f;
     }
 
-    // ── AudioSource temporário ────────────────────────────────────────────────
+    // ── VideoPlayer temporário ────────────────────────────────────────────────
 
-    AudioSource GetOrCreatePreviewSource()
+    VideoPlayer GetOrCreatePreviewPlayer()
     {
-        if (_previewSource != null) return _previewSource;
-        var go = new GameObject("[StepRecorder_Audio]") { hideFlags = HideFlags.HideAndDontSave };
+        if (_previewPlayer != null) return _previewPlayer;
+
+        var go = new GameObject("[StepRecorder_Video]") { hideFlags = HideFlags.HideAndDontSave };
         Object.DontDestroyOnLoad(go);
-        _previewSource = go.AddComponent<AudioSource>();
-        _previewSource.playOnAwake = false;
-        return _previewSource;
+
+        // RenderTexture para exibir o frame na janela
+        _previewTexture = new RenderTexture(640, 360, 0);
+        _previewTexture.Create();
+
+        _previewPlayer = go.AddComponent<VideoPlayer>();
+        _previewPlayer.playOnAwake    = false;
+        _previewPlayer.isLooping      = false;
+        _previewPlayer.renderMode     = VideoRenderMode.RenderTexture;
+        _previewPlayer.targetTexture  = _previewTexture;
+        _previewPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+        _previewPlayer.SetTargetAudioSource(0, go.AddComponent<AudioSource>());
+
+        return _previewPlayer;
     }
 
-    void DestroyPreviewSource()
+    void DestroyPreviewPlayer()
     {
-        if (_previewSource == null) return;
-        _previewSource.Stop();
-        if (_previewSource.gameObject != null)
-            Object.DestroyImmediate(_previewSource.gameObject);
-        _previewSource = null;
+        if (_previewPlayer != null)
+        {
+            _previewPlayer.Stop();
+            if (_previewPlayer.gameObject != null)
+                Object.DestroyImmediate(_previewPlayer.gameObject);
+            _previewPlayer = null;
+        }
+        if (_previewTexture != null)
+        {
+            _previewTexture.Release();
+            Object.DestroyImmediate(_previewTexture);
+            _previewTexture = null;
+        }
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

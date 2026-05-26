@@ -46,7 +46,7 @@ public static class PoseComparator
             float dist = Mathf.Sqrt(dx * dx + dy * dy);
 
             float weight = JointWeights.TryGetValue(kvp.Key, out float w) ? w : 1f;
-            weightedScore += Mathf.Clamp01(1f - dist / (tolerance * 2f)) * weight;
+            weightedScore += Mathf.Clamp01(1f - dist / tolerance) * weight;
             totalWeight   += weight;
         }
         return totalWeight > 0f ? weightedScore / totalWeight : 0f;

@@ -16,6 +16,7 @@ public class PlayerHUD : MonoBehaviour
 
     [Header("Rating Popup — imagens")]
     public Image   ratingImage;        // Image que exibe o sprite do rating
+    public Sprite  spriteMiss;
     public Sprite  spriteBom;
     public Sprite  spritePerfeito;
     public Animator ratingAnimator;    // opcional — acione trigger "Show"
@@ -40,13 +41,17 @@ public class PlayerHUD : MonoBehaviour
 
     public void ShowRatingPopup(ScoreRating rating)
     {
-        if (ratingImage == null || rating == ScoreRating.Miss)
-        {
-            if (ratingImage) ratingImage.gameObject.SetActive(false);
-            return;
-        }
+        if (ratingImage == null) return;
 
-        ratingImage.sprite = rating == ScoreRating.Perfeito ? spritePerfeito : spriteBom;
+        ratingImage.sprite = rating switch
+        {
+            ScoreRating.Perfeito => spritePerfeito,
+            ScoreRating.Bom      => spriteBom,
+            _                    => spriteMiss,
+        };
+
+        if (ratingImage.sprite == null) { ratingImage.gameObject.SetActive(false); return; }
+
         ratingImage.gameObject.SetActive(true);
         ratingAnimator?.SetTrigger("Show");
         StopCoroutine(nameof(HideRating));

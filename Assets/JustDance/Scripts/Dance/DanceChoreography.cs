@@ -1,25 +1,28 @@
 using UnityEngine;
+using UnityEngine.Video;
 using System.Collections.Generic;
 
 /// <summary>
-/// ScriptableObject que define a coreografia completa de uma música:
-/// sequência de passos com timing sincronizado à música.
+/// ScriptableObject que define a coreografia completa de uma música.
+/// O áudio deve estar embutido no videoClip.
 /// Crie via: Assets > Create > JustDance > Choreography
 /// </summary>
 [CreateAssetMenu(fileName = "Choreo_NomeDaMusica", menuName = "JustDance/Choreography")]
 public class DanceChoreography : ScriptableObject
 {
-    [Header("Música")]
+    [Header("Identificação")]
     public string songTitle;
     public string artist;
-    public AudioClip musicClip;
     public Sprite coverArt;
+
+    [Header("Vídeo (áudio embutido)")]
+    public VideoClip videoClip;
 
     [Header("Configuração")]
     [Tooltip("BPM da música (beats per minute)")]
     public float bpm = 128f;
 
-    [Tooltip("Offset em segundos para o primeiro beat")]
+    [Tooltip("Offset em segundos do início do vídeo até o primeiro beat")]
     public float firstBeatOffset = 0f;
 
     [Header("Sequência de Passos")]
@@ -31,7 +34,7 @@ public class DanceChoreography : ScriptableObject
         [Tooltip("DanceStep a ser executado")]
         public DanceStep step;
 
-        [Tooltip("Segundo da música em que este passo começa")]
+        [Tooltip("Segundo do vídeo em que este passo começa")]
         public float startTime;
 
         [Tooltip("Janela em segundos que o jogador tem para acertar (antecipação)")]
@@ -41,7 +44,6 @@ public class DanceChoreography : ScriptableObject
         public float windowAfter = 0.2f;
     }
 
-    /// <summary>Retorna o passo ativo para um dado tempo da música.</summary>
     public StepEntry GetActiveStep(float musicTime)
     {
         foreach (var entry in steps)
@@ -54,7 +56,6 @@ public class DanceChoreography : ScriptableObject
         return null;
     }
 
-    /// <summary>Retorna o próximo passo que ainda não chegou (para preview no HUD).</summary>
     public StepEntry GetUpcomingStep(float musicTime, float lookAheadSeconds = 1.5f)
     {
         foreach (var entry in steps)
@@ -66,5 +67,6 @@ public class DanceChoreography : ScriptableObject
     }
 
     public float TotalDuration =>
-        musicClip != null ? musicClip.length : (steps.Length > 0 ? steps[^1].startTime + 2f : 60f);
+        videoClip != null ? (float)videoClip.length :
+        (steps != null && steps.Length > 0 ? steps[^1].startTime + 2f : 60f);
 }

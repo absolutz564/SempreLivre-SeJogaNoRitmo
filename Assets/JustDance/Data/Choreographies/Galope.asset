@@ -14,36 +14,76 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   songTitle: Galope
   artist: JustDance Dev
-  musicClip: {fileID: 8300000, guid: 2ff56e73825fdf541b1111a2397789e1, type: 3}
   coverArt: {fileID: 0}
+  videoClip: {fileID: 32900000, guid: 5ede54f93fef32e4aa92fce02dab1774, type: 3}
   bpm: 120
   firstBeatOffset: 0
   steps:
-  - step: {fileID: 11400000, guid: eb1dcdf985fa6bb49a95c6fb20ee7704, type: 2}
-    startTime: 7
+  - step: {fileID: 11400000, guid: 62159d55246467645b3a07a047fd0096, type: 2}
+    startTime: 0
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: cdb586b3a82b08342810b5a2ec9cc6ee, type: 2}
-    startTime: 8.5
+  - step: {fileID: 11400000, guid: a96bce0a91b7f0d4db6a646b3ab16e24, type: 2}
+    startTime: 3.3
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: eb1dcdf985fa6bb49a95c6fb20ee7704, type: 2}
-    startTime: 9.5
+  - step: {fileID: 11400000, guid: 9af5a4a8c36891e498230b74653adc93, type: 2}
+    startTime: 6.45
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: cdb586b3a82b08342810b5a2ec9cc6ee, type: 2}
-    startTime: 12
+  - step: {fileID: 11400000, guid: ac35c369a21c51743ae442dfd0606a03, type: 2}
+    startTime: 8.766666
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: eb1dcdf985fa6bb49a95c6fb20ee7704, type: 2}
-    startTime: 15
+  - step: {fileID: 11400000, guid: d80bbf35fa98be349a7d13934b7d5caa, type: 2}
+    startTime: 10.433333
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: cdb586b3a82b08342810b5a2ec9cc6ee, type: 2}
-    startTime: 20
+  - step: {fileID: 11400000, guid: 6be689db435214c4f9e0706d05464950, type: 2}
+    startTime: 12.583333
     windowBefore: 0.5
     windowAfter: 0.3
-  - step: {fileID: 11400000, guid: eb1dcdf985fa6bb49a95c6fb20ee7704, type: 2}
-    startTime: 28
+  - step: {fileID: 11400000, guid: 679d62618a852914ca3615387d872aa6, type: 2}
+    startTime: 15.816667
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 8d5cc2016de1b85438693fcf6479bfbc, type: 2}
+    startTime: 18.266666
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 769a18cda8b91ab428cd78391db6a28c, type: 2}
+    startTime: 20.266666
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 4fc65ee0fd2f15441b313a513cd0c111, type: 2}
+    startTime: 21
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 8364c5a533130bf4583b431ec077afa2, type: 2}
+    startTime: 22.183332
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: b6ff4f696f6b93e4399c90add8498d45, type: 2}
+    startTime: 23.666666
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: bab42869dc08b184cbaadee679696019, type: 2}
+    startTime: 25.983334
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: 874388c9562e5bc46a41bd92f0becaa4, type: 2}
+    startTime: 27.466667
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: a446bd4beab3da341b4bdf99902e681c, type: 2}
+    startTime: 28.283333
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: c09d0f59297f81240b060b826e0d72db, type: 2}
+    startTime: 29.433332
+    windowBefore: 0.5
+    windowAfter: 0.3
+  - step: {fileID: 11400000, guid: f004a358ece5ef6449326d37e9cd96f0, type: 2}
+    startTime: 31.8
     windowBefore: 0.5
     windowAfter: 0.3

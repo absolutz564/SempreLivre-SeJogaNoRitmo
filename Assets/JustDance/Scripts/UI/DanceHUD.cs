@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
 
 /// <summary>
 /// Controla toda a interface do jogo durante a dança.
@@ -20,6 +19,10 @@ public class DanceHUD : MonoBehaviour
     [Header("Multi-Jogador — painéis per-player")]
     public PlayerHUD[] playerHUDs;           // [0]=P1  [1]=P2
 
+    // ── Rastreamento ──────────────────────────────────────────────────────────
+    [Header("Rastreamento")]
+    public GameObject trackingWaitPanel;
+
     // ── Countdown / Mensagem ─────────────────────────────────────────────────
     [Header("Countdown / Mensagem")]
     public GameObject      countdownPanel;
@@ -30,28 +33,28 @@ public class DanceHUD : MonoBehaviour
     [Header("Preview Lane")]
     public StepPreviewLane stepPreviewLane;
 
-    // ── Resultado Final — 1 Jogador ───────────────────────────────────────────
-    [Header("Resultado Final — 1 Jogador")]
+    // ── Resultado Final ───────────────────────────────────────────────────────
+    [Header("Resultado Final")]
     public GameObject      resultsPanel;
     public TextMeshProUGUI finalScoreText;
-    public TextMeshProUGUI gradeText;
     public TextMeshProUGUI perfectCountText;
-    public TextMeshProUGUI greatCountText;
-    public TextMeshProUGUI missCountText;
+    public TextMeshProUGUI bomCountText;
+    public TextMeshProUGUI errorsCountText;
+    public TextMeshProUGUI precisionText;
+    public Image           resultIconImage;
 
-    // ── Resultado Final — 2 Jogadores ─────────────────────────────────────────
-    [Header("Resultado Final — 2 Jogadores")]
-    public GameObject      resultsPanel2P;
-    public TextMeshProUGUI finalScoreP1Text;
-    public TextMeshProUGUI gradeP1Text;
-    public TextMeshProUGUI finalScoreP2Text;
-    public TextMeshProUGUI gradeP2Text;
-    public TextMeshProUGUI winnerText;
+    // ── Sprites de Performance ────────────────────────────────────────────────
+    [Header("Sprites de Performance")]
+    public Sprite spriteIncrivel;
+    public Sprite spriteMandoubem;
+    public Sprite spriteFoibem;
+    public Sprite spriteQuasela;
+    public Sprite spriteTenteOutravez;
 
     void Start()
     {
+        trackingWaitPanel?.SetActive(false);
         resultsPanel?.SetActive(false);
-        resultsPanel2P?.SetActive(false);
         countdownPanel?.SetActive(false);
     }
 
@@ -123,42 +126,54 @@ public class DanceHUD : MonoBehaviour
         if (messageText) messageText.gameObject.SetActive(false);
     }
 
+    public void ShowTrackingWait() => trackingWaitPanel?.SetActive(true);
+    public void HideTrackingWait() => trackingWaitPanel?.SetActive(false);
+
     // ── Resultados ────────────────────────────────────────────────────────────
 
+    // Agrega scores de todos os jogadores ativos no mesmo painel.
+    // Para 2 jogadores o denominador vira passos×2 automaticamente.
     public void ShowResults(ScoreManager[] managers)
     {
-        int count = GameSession.PlayerCount;
+        resultsPanel?.SetActive(true);
 
-        if (count >= 2 && resultsPanel2P != null)
+        int count        = GameSession.PlayerCount;
+        int totalScore   = 0;
+        int totalPerfeito = 0;
+        int totalBom     = 0;
+        int totalMiss    = 0;
+
+        for (int p = 0; p < count && managers != null && p < managers.Length; p++)
         {
-            resultsPanel2P.SetActive(true);
-
-            var sm0 = managers != null && managers.Length > 0 ? managers[0] : null;
-            var sm1 = managers != null && managers.Length > 1 ? managers[1] : null;
-
-            if (finalScoreP1Text) finalScoreP1Text.text = sm0?.TotalScore.ToString("N0") ?? "0";
-            if (gradeP1Text)      gradeP1Text.text      = sm0?.GetGrade() ?? "-";
-            if (finalScoreP2Text) finalScoreP2Text.text = sm1?.TotalScore.ToString("N0") ?? "0";
-            if (gradeP2Text)      gradeP2Text.text      = sm1?.GetGrade() ?? "-";
-
-            if (winnerText)
-            {
-                int s1 = sm0?.TotalScore ?? 0;
-                int s2 = sm1?.TotalScore ?? 0;
-                winnerText.text = s1 > s2 ? "JOGADOR 1 VENCEU!"
-                               : s2 > s1 ? "JOGADOR 2 VENCEU!"
-                               :            "EMPATE!";
-            }
+            var sm = managers[p];
+            if (sm == null) continue;
+            totalScore    += sm.TotalScore;
+            totalPerfeito += sm.PerfeitoCount;
+            totalBom      += sm.BomCount;
+            totalMiss     += sm.MissCount;
         }
-        else
-        {
-            resultsPanel?.SetActive(true);
-            var sm = managers != null && managers.Length > 0 ? managers[0] : null;
-            if (finalScoreText)   finalScoreText.text   = sm?.TotalScore.ToString("N0") ?? "0";
-            if (gradeText)        gradeText.text        = sm?.GetGrade() ?? "-";
-            if (perfectCountText) perfectCountText.text = $"PERFEITO x{sm?.PerfeitoCount}";
-            if (greatCountText)   greatCountText.text   = $"BOM x{sm?.BomCount}";
-            if (missCountText)    missCountText.text     = $"MISS x{sm?.MissCount}";
-        }
+
+        int   total = totalPerfeito + totalBom + totalMiss;
+        float acc   = total > 0 ? (totalPerfeito + totalBom) / (float)total * 100f : 0f;
+
+        if (finalScoreText)   finalScoreText.text   = totalScore.ToString("N0");
+        if (perfectCountText) perfectCountText.text = $"PERFEITO x{totalPerfeito}";
+        if (bomCountText)     bomCountText.text     = $"BOM x{totalBom}";
+        if (errorsCountText)  errorsCountText.text  = $"ERROS x{totalMiss}";
+        if (precisionText)    precisionText.text    = $"{acc:F0}%";
+        ApplyPerformanceIcon(resultIconImage, acc);
+    }
+
+    // ── Helper de resultado ───────────────────────────────────────────────────
+
+    void ApplyPerformanceIcon(Image img, float accuracyPct)
+    {
+        if (img == null) return;
+        img.sprite = accuracyPct >= 85f ? spriteIncrivel
+                   : accuracyPct >= 65f ? spriteMandoubem
+                   : accuracyPct >= 45f ? spriteFoibem
+                   : accuracyPct >= 25f ? spriteQuasela
+                   :                      spriteTenteOutravez;
+        img.gameObject.SetActive(img.sprite != null);
     }
 }
