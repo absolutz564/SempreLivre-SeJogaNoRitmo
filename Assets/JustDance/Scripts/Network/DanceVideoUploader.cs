@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Video;
 using System.Collections;
 using System.IO;
 
@@ -24,7 +25,14 @@ public class DanceVideoUploader : MonoBehaviour
     public GameObject successPanel;
     public UnityEngine.UI.Image qrCodeImage;
 
+    [Header("Preview de Vídeo (PanelVideoSended)")]
+    public UnityEngine.UI.RawImage videoPreviewImage;
+    public AudioSource videoAudioSource;
+
     public bool IsUploading { get; private set; }
+
+    private VideoPlayer _previewPlayer;
+    private RenderTexture _previewRT;
 
     public void UploadVideo(string videoFilePath)
     {
@@ -38,9 +46,18 @@ public class DanceVideoUploader : MonoBehaviour
 
     IEnumerator UploadRoutine(string videoFilePath)
     {
+        // Mostra preview imediatamente, independente do upload
+        successPanel?.SetActive(true);
+        PlayPreviewLoop(videoFilePath);
+
+        if (string.IsNullOrEmpty(serverUrl) || serverUrl.Contains("SEU_SERVIDOR"))
+        {
+            Debug.LogWarning("[Uploader] Servidor não configurado — exibindo apenas preview local.");
+            yield break;
+        }
+
         IsUploading = true;
         uploadingPanel?.SetActive(true);
-        successPanel?.SetActive(false);
 
         byte[] videoBytes = File.ReadAllBytes(videoFilePath);
         Debug.Log($"[Uploader] Enviando {videoBytes.Length / 1024} KB para {serverUrl}{uploadEndpoint}");
@@ -70,7 +87,6 @@ public class DanceVideoUploader : MonoBehaviour
         }
 
         Debug.Log("[Uploader] Upload concluído com sucesso!");
-        successPanel?.SetActive(true);
 
         // Tentar exibir QR code se servidor retornar (mesmo padrão PetrobrasVideo)
         TryShowQRCode(request.downloadHandler.text);
@@ -97,6 +113,57 @@ public class DanceVideoUploader : MonoBehaviour
         {
             Debug.LogWarning($"[Uploader] QR code não encontrado na resposta: {e.Message}");
         }
+    }
+
+    void PlayPreviewLoop(string videoPath)
+    {
+        if (videoPreviewImage == null) return;
+
+        if (_previewPlayer != null)
+        {
+            _previewPlayer.Stop();
+            Destroy(_previewPlayer);
+        }
+        if (_previewRT != null)
+            _previewRT.Release();
+
+        _previewRT = new RenderTexture(1080, 1920, 0);
+        videoPreviewImage.texture = _previewRT;
+
+        _previewPlayer = gameObject.AddComponent<VideoPlayer>();
+        _previewPlayer.playOnAwake  = false;
+        _previewPlayer.isLooping    = true;
+        _previewPlayer.url          = "file://" + videoPath;
+        _previewPlayer.targetTexture = _previewRT;
+
+        if (videoAudioSource != null)
+        {
+            _previewPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+            _previewPlayer.SetTargetAudioSource(0, videoAudioSource);
+        }
+        else
+        {
+            _previewPlayer.audioOutputMode = VideoAudioOutputMode.Direct;
+        }
+
+        _previewPlayer.Play();
+        Debug.Log($"[Uploader] Preview iniciado: {videoPath}");
+    }
+
+    public void StopPreview()
+    {
+        if (_previewPlayer != null)
+        {
+            _previewPlayer.Stop();
+            Destroy(_previewPlayer);
+            _previewPlayer = null;
+        }
+    }
+
+    void OnDestroy()
+    {
+        StopPreview();
+        if (_previewRT != null) { _previewRT.Release(); _previewRT = null; }
     }
 
     [System.Serializable] private class QRResponse { public string qrcode; }
