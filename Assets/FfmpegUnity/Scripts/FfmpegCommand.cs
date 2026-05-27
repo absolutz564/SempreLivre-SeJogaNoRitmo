@@ -567,10 +567,10 @@ namespace FfmpegUnity
             do
             {
                 stdErrLoopResult = stdErrLine();
-                if (PrintStdErr && stdErrLoopResult != null)
-                {
-                    UnityEngine.Debug.Log(stdErrLoopResult);
-                }
+                // if (PrintStdErr && stdErrLoopResult != null)
+                // {
+                //     UnityEngine.Debug.Log(stdErrLoopResult);
+                // }
                 if (GetProgressOnScript && stdErrLoopResult != null)
                 {
                     if (stdErrLoopResult.Contains("Duration: "))

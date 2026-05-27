@@ -223,7 +223,7 @@ public class DanceController : MonoBehaviour
                                                _currentEntry.step?.tolerance ?? defaultTolerance);
             }
 
-            Debug.Log($"[DanceController] J{p + 1} '{_currentEntry.step?.stepName}' score={score:F2}");
+            // Debug.Log($"[DanceController] J{p + 1} '{_currentEntry.step?.stepName}' score={score:F2}");
 
             if (score > _stepBestScore[p])
             {
