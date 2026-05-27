@@ -20,13 +20,18 @@ public class MainMenuController : MonoBehaviour
     public SelectableButton btn2Players;
 
     [Header("Iniciar")]
-    public Button btnStart;
+    public SelectableButton btnStart;
 
     [Header("Referência")]
     public DanceController danceController;
 
     private int _selectedRhythm = -1;
     private int _selectedMode   =  0;
+
+    // Navegação por passador de slide (PageDown / PageUp)
+    // Seção 0 = Ritmo, 1 = Modo, 2 = Iniciar
+    private int _navSection = 0;
+    private int _navIndex   = 0;
 
     void Awake()
     {
@@ -37,14 +42,63 @@ public class MainMenuController : MonoBehaviour
         }
         btn1Player .button?.onClick.AddListener(() => SelectMode(1));
         btn2Players.button?.onClick.AddListener(() => SelectMode(2));
-        btnStart           ?.onClick.AddListener(StartGame);
+        btnStart.button    ?.onClick.AddListener(StartGame);
     }
 
     void OnEnable()
     {
-        _selectedRhythm = -1;
-        _selectedMode   =  0;
-        RefreshUI();
+        _navSection = 0;
+        _navIndex   = 0;
+        _selectedMode = 0;
+        SelectRhythm(0); // pré-seleciona primeiro ritmo
+    }
+
+    void Update()
+    {
+        if (!Input.anyKeyDown) return;
+
+        bool pageDown = Input.GetKeyDown(KeyCode.PageDown);
+        bool pageUp   = Input.GetKeyDown(KeyCode.PageUp);
+
+        if (_navSection == 2)
+        {
+            // Qualquer tecla inicia o jogo
+            StartGame();
+            return;
+        }
+
+        if (pageDown || pageUp)
+        {
+            NavigateCurrent(pageDown ? 1 : -1);
+        }
+        else
+        {
+            AdvanceSection();
+        }
+    }
+
+    void NavigateCurrent(int dir)
+    {
+        if (_navSection == 0)
+        {
+            _navIndex = Mathf.Clamp(_navIndex + dir, 0, rhythmButtons.Length - 1);
+            SelectRhythm(_navIndex);
+        }
+        else if (_navSection == 1)
+        {
+            _navIndex = Mathf.Clamp(_navIndex + dir, 0, 1);
+            SelectMode(_navIndex + 1); // índice 0 → 1 jogador, 1 → 2 jogadores
+        }
+    }
+
+    void AdvanceSection()
+    {
+        _navSection++;
+        _navIndex = 0;
+        if (_navSection == 1)
+            SelectMode(1); // pré-seleciona 1 Jogador ao entrar na seção de modo
+        else if (_navSection == 2)
+            RefreshUI();   // aplica feedback visual no botão Iniciar
     }
 
     void SelectRhythm(int index) { _selectedRhythm = index; RefreshUI(); }
@@ -57,9 +111,10 @@ public class MainMenuController : MonoBehaviour
 
         Apply(ref btn1Player,  _selectedMode == 1);
         Apply(ref btn2Players, _selectedMode == 2);
+        Apply(ref btnStart,    _navSection == 2);
 
-        if (btnStart != null)
-            btnStart.interactable = _selectedRhythm >= 0 && _selectedMode > 0;
+        if (btnStart.button != null)
+            btnStart.button.interactable = _selectedRhythm >= 0 && _selectedMode > 0;
     }
 
     static void Apply(ref SelectableButton sb, bool selected)
@@ -72,7 +127,8 @@ public class MainMenuController : MonoBehaviour
 
     void StartGame()
     {
-        if (_selectedRhythm >= 0 && _selectedRhythm < rhythmChoreographies.Length)
+        if (_selectedRhythm < 0 || _selectedMode == 0) return;
+        if (_selectedRhythm < rhythmChoreographies.Length)
             GameSession.SelectedChoreography = rhythmChoreographies[_selectedRhythm];
         GameSession.PlayerCount = _selectedMode;
         gameObject.SetActive(false);

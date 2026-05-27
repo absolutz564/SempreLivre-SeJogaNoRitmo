@@ -157,9 +157,9 @@ public class DanceHUD : MonoBehaviour
         float acc   = total > 0 ? (totalPerfeito + totalBom) / (float)total * 100f : 0f;
 
         if (finalScoreText)   finalScoreText.text   = totalScore.ToString("N0");
-        if (perfectCountText) perfectCountText.text = $"PERFEITO x{totalPerfeito}";
-        if (bomCountText)     bomCountText.text     = $"BOM x{totalBom}";
-        if (errorsCountText)  errorsCountText.text  = $"ERROS x{totalMiss}";
+        if (perfectCountText) perfectCountText.text = $"x{totalPerfeito}";
+        if (bomCountText)     bomCountText.text     = $"x{totalBom}";
+        if (errorsCountText)  errorsCountText.text  = $"x{totalMiss}";
         if (precisionText)    precisionText.text    = $"{acc:F0}%";
         ApplyPerformanceIcon(resultIconImage, acc);
     }
