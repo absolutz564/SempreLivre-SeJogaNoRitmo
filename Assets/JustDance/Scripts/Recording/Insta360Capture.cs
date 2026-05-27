@@ -13,8 +13,11 @@ public class Insta360Capture : MonoBehaviour
     public UnityEngine.UI.RawImage previewImage;
 
     [Header("Configuração")]
-    [Tooltip("Nome parcial do dispositivo. Deixar vazio para detectar automaticamente.")]
+    [Tooltip("Nome parcial do dispositivo preferido.")]
     public string deviceNameHint = "Insta360";
+
+    [Tooltip("Nome parcial da câmera a evitar (usada só como último recurso).")]
+    public string excludeNameHint = "Kinect";
 
     [Tooltip("Resolução de captura preferida")]
     public int preferredWidth  = 1920;
@@ -46,22 +49,43 @@ public class Insta360Capture : MonoBehaviour
             yield break;
         }
 
-        // Tentar encontrar a Insta360 pelo nome
         DeviceName = null;
+        string kinectFallback = null;
+
         foreach (var d in devices)
         {
             Debug.Log($"[Insta360] Câmera disponível: {d.name}");
+
+            bool isExcluded = !string.IsNullOrEmpty(excludeNameHint) &&
+                              d.name.Contains(excludeNameHint, System.StringComparison.OrdinalIgnoreCase);
+
             if (d.name.Contains(deviceNameHint, System.StringComparison.OrdinalIgnoreCase))
             {
+                // Câmera preferida encontrada — usa imediatamente
                 DeviceName = d.name;
                 break;
             }
+
+            if (isExcluded)
+            {
+                // Guarda como último recurso mas não usa ainda
+                if (kinectFallback == null) kinectFallback = d.name;
+            }
+            else if (DeviceName == null)
+            {
+                // Qualquer câmera não-excluída vira candidata
+                DeviceName = d.name;
+            }
         }
 
-        // Fallback: usar primeira câmera disponível
+        // Último recurso: só Kinect disponível
         if (DeviceName == null)
         {
-            DeviceName = devices[0].name;
+            DeviceName = kinectFallback;
+            Debug.LogWarning($"[Insta360] Apenas câmera excluída ({excludeNameHint}) disponível. Usando: {DeviceName}");
+        }
+        else if (!DeviceName.Contains(deviceNameHint, System.StringComparison.OrdinalIgnoreCase))
+        {
             Debug.LogWarning($"[Insta360] '{deviceNameHint}' não encontrado. Usando: {DeviceName}");
         }
 

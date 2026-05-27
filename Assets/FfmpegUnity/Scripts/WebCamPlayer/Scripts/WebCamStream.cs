@@ -126,18 +126,39 @@
 			}
 		}
 
+		// Returns the name of the first non-Kinect camera, or the Kinect as last resort.
+		private string SelectAutoDevice() {
+			var devices = WebCamTexture.devices;
+			string kinectFallback = null;
+			foreach (var d in devices) {
+				if (d.name.IndexOf("Kinect", System.StringComparison.OrdinalIgnoreCase) >= 0) {
+					if (kinectFallback == null) kinectFallback = d.name;
+				} else {
+					return d.name;
+				}
+			}
+			return kinectFallback;
+		}
+
 		private void CreateWebCamTexture() {
 			if (_webCamTexture != null) {
 				DestroyImmediate(_webCamTexture);
 			}
 			if (_deviceMode == DeviceMode.Auto) {
+				string autoDevice = SelectAutoDevice();
 				if (_resolutionMode == ResolutionMode.Auto) {
-					_webCamTexture = new WebCamTexture();
+					_webCamTexture = autoDevice != null
+						? new WebCamTexture(autoDevice)
+						: new WebCamTexture();
 				} else {
 					if (_fpsMode == FPSMode.Auto) {
-						_webCamTexture = new WebCamTexture(_requestedWidth, _requestedHeight);
+						_webCamTexture = autoDevice != null
+							? new WebCamTexture(autoDevice, _requestedWidth, _requestedHeight)
+							: new WebCamTexture(_requestedWidth, _requestedHeight);
 					} else {
-						_webCamTexture = new WebCamTexture(_requestedWidth, _requestedHeight, _requestedFPS);
+						_webCamTexture = autoDevice != null
+							? new WebCamTexture(autoDevice, _requestedWidth, _requestedHeight, _requestedFPS)
+							: new WebCamTexture(_requestedWidth, _requestedHeight, _requestedFPS);
 					}
 				}
 			} else {
