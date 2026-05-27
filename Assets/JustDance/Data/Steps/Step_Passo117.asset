@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6e0a2588896c246bd35d804f00c19b, type: 3}
+  m_Name: Step_Passo117
+  m_EditorClassIdentifier: 
+  stepName: Passo117
+  description: 
+  previewSprite: {fileID: 21300000, guid: d5aced039255c904ba58b629b001d348, type: 3}
+  arrowColor: {r: 1, g: 1, b: 1, a: 1}
+  duration: 0.8
+  tolerance: 0.45
+  referenceJoints:
+  - jointId: 0
+    normalizedPosition: {x: 0, y: 0, z: 0}
+  - jointId: 1
+    normalizedPosition: {x: 0.016704755, y: 0.56755835, z: 0.096614756}
+  - jointId: 2
+    normalizedPosition: {x: 0.0059824605, y: 1.1271181, z: 0.16167584}
+  - jointId: 3
+    normalizedPosition: {x: -0.11184221, y: 1.2686794, z: 0.30460426}
+  - jointId: 4
+    normalizedPosition: {x: -0.3146818, y: 0.80981135, z: 0.20590602}
+  - jointId: 5
+    normalizedPosition: {x: -0.59315836, y: 0.52829665, z: 0.2881565}
+  - jointId: 6
+    normalizedPosition: {x: -0.50103426, y: 0.171208, z: 0.29889244}
+  - jointId: 7
+    normalizedPosition: {x: -0.38125476, y: 0.15596677, z: 0.35423213}
+  - jointId: 8
+    normalizedPosition: {x: 0.1576213, y: 0.8584286, z: 0.040025197}
+  - jointId: 9
+    normalizedPosition: {x: 0.47660163, y: 0.68383586, z: -0.12793128}
+  - jointId: 10
+    normalizedPosition: {x: 0.5028873, y: 0.3131107, z: -0.14067233}
+  - jointId: 11
+    normalizedPosition: {x: 0.41370437, y: 0.28334987, z: -0.0359654}
+  - jointId: 12
+    normalizedPosition: {x: -0.11895541, y: 0.018778412, z: -0.046892155}
+  - jointId: 13
+    normalizedPosition: {x: -0.10149659, y: -0.5991023, z: -0.0956311}
+  - jointId: 14
+    normalizedPosition: {x: -0.23650983, y: -1.3305235, z: -0.23142014}
+  - jointId: 15
+    normalizedPosition: {x: -0.29988438, y: -1.2814944, z: -0.43250027}
+  - jointId: 16
+    normalizedPosition: {x: 0.09285441, y: 0.016899245, z: -0.07033385}
+  - jointId: 17
+    normalizedPosition: {x: 0.06507811, y: -0.5811314, z: -0.50529516}
+  - jointId: 18
+    normalizedPosition: {x: 0.06447706, y: -1.162796, z: -0.89758146}
+  - jointId: 19
+    normalizedPosition: {x: 0.008058279, y: -1.0546979, z: -1.0577781}
+  - jointId: 20
+    normalizedPosition: {x: 0.009745863, y: 0.9887902, z: 0.1489931}
+  - jointId: 21
+    normalizedPosition: {x: -0.36831442, y: 0.13870038, z: 0.36109403}
+  - jointId: 22
+    normalizedPosition: {x: -0.36756575, y: 0.17672922, z: 0.30735612}
+  - jointId: 23
+    normalizedPosition: {x: 0.40424082, y: 0.25581956, z: -0.05077241}
+  - jointId: 24
+    normalizedPosition: {x: 0.41196665, y: 0.27299088, z: -0.0878056}

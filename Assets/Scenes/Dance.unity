@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 23129158}
   - component: {fileID: 23129157}
   - component: {fileID: 23129156}
+  - component: {fileID: 23129160}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -268,6 +269,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23129154}
   m_CullTransparentMesh: 1
+--- !u!114 &23129160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23129154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563536a60bcb92c4facc2ae2647c597f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 2
 --- !u!1 &37923912
 GameObject:
   m_ObjectHideFlags: 0
@@ -2428,8 +2442,8 @@ MonoBehaviour:
   evaluationRate: 10
   mockTracking: 0
   defaultTolerance: 0.15
-  scorePerfeito: 0.75
-  scoreBom: 0.52
+  scorePerfeito: 0.72
+  scoreBom: 0.45
 --- !u!4 &495213775
 Transform:
   m_ObjectHideFlags: 0
@@ -3222,6 +3236,30 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1405660367}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1256408557}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1411121649}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -4796,6 +4834,7 @@ GameObject:
   m_Component:
   - component: {fileID: 922601476}
   - component: {fileID: 922601478}
+  - component: {fileID: 922601479}
   m_Layer: 0
   m_Name: CameraRecorder
   m_TagString: Untagged
@@ -4873,6 +4912,23 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &922601479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922601475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9a7d52a912636242aeca22e83b125f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targets:
+  - {fileID: 1067793080}
+  - {fileID: 1830330325}
+  rotateKey: 114
+  angleStep: 90
 --- !u!1 &923735530
 GameObject:
   m_ObjectHideFlags: 0
@@ -4912,13 +4968,13 @@ RectTransform:
   - {fileID: 424424209}
   - {fileID: 485487633}
   - {fileID: 874706923}
-  - {fileID: 81229875}
   - {fileID: 1256408559}
   - {fileID: 1411121651}
   - {fileID: 622292864}
   - {fileID: 2120419436}
   - {fileID: 1617531399}
   - {fileID: 1405660368}
+  - {fileID: 81229875}
   - {fileID: 1402668075}
   - {fileID: 60304776}
   m_Father: {fileID: 1790381903}
@@ -5471,7 +5527,7 @@ GameObject:
   - component: {fileID: 1067793081}
   - component: {fileID: 1067793080}
   m_Layer: 6
-  m_Name: Background
+  m_Name: Webcam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5491,11 +5547,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1790381903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -1733, y: 243}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1819, y: 0}
   m_SizeDelta: {x: 1080, y: 1920}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1067793080
 MonoBehaviour:
   m_ObjectHideFlags: 0

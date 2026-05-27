@@ -56,6 +56,9 @@ public class MainMenuController : MonoBehaviour
     void Update()
     {
         if (!Input.anyKeyDown) return;
+        if (Input.GetKeyDown(KeyCode.Mouse0) ||
+            Input.GetKeyDown(KeyCode.Mouse1) ||
+            Input.GetKeyDown(KeyCode.Mouse2)) return;
 
         bool pageDown = Input.GetKeyDown(KeyCode.PageDown);
         bool pageUp   = Input.GetKeyDown(KeyCode.PageUp);

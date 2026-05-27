@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stepName: Xote - Passo10
   description: 
-  previewSprite: {fileID: 21300000, guid: 99b1b841eb3ec7b488e89de51b0e9ab8, type: 3}
+  previewSprite: {fileID: 21300000, guid: 45d39d89a41636a4c8fd3b3db82cb551, type: 3}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.8
   tolerance: 0.45
@@ -22,50 +22,50 @@ MonoBehaviour:
   - jointId: 0
     normalizedPosition: {x: 0, y: 0, z: 0}
   - jointId: 1
-    normalizedPosition: {x: -0.043104965, y: 0.56539273, z: 0.13174897}
+    normalizedPosition: {x: 0.032934, y: 0.5448365, z: 0.19809933}
   - jointId: 2
-    normalizedPosition: {x: -0.084799, y: 1.1047372, z: 0.24271889}
+    normalizedPosition: {x: 0.063726306, y: 1.0715684, z: 0.36870062}
   - jointId: 3
-    normalizedPosition: {x: -0.055573512, y: 1.2702903, z: 0.25836575}
+    normalizedPosition: {x: 0.07609729, y: 1.3447636, z: 0.4457057}
   - jointId: 4
-    normalizedPosition: {x: -0.13882767, y: 0.84959257, z: 0.016619341}
+    normalizedPosition: {x: -0.27223885, y: 0.8374914, z: 0.35120785}
   - jointId: 5
-    normalizedPosition: {x: -0.054200757, y: 0.44430372, z: -0.106073946}
+    normalizedPosition: {x: -0.6055593, y: 0.4918427, z: 0.43233857}
   - jointId: 6
-    normalizedPosition: {x: 0.23693478, y: 0.43154266, z: 0.085292295}
+    normalizedPosition: {x: -0.52182883, y: 0.19814202, z: 0.10815751}
   - jointId: 7
-    normalizedPosition: {x: 0.2479893, y: 0.4675497, z: 0.12956256}
+    normalizedPosition: {x: -0.40638983, y: 0.1499844, z: 0.011297291}
   - jointId: 8
-    normalizedPosition: {x: 0.020400885, y: 0.787834, z: 0.352817}
+    normalizedPosition: {x: 0.36493653, y: 0.8393623, z: 0.27253732}
   - jointId: 9
-    normalizedPosition: {x: 0.1518777, y: 0.6469163, z: 0.0055213724}
+    normalizedPosition: {x: 0.7401306, y: 0.54863846, z: 0.39254984}
   - jointId: 10
-    normalizedPosition: {x: -0.0837715, y: 0.4388882, z: -0.19045177}
+    normalizedPosition: {x: 0.6212227, y: 0.21832943, z: 0.14852092}
   - jointId: 11
-    normalizedPosition: {x: -0.14859293, y: 0.34778607, z: -0.16353111}
+    normalizedPosition: {x: 0.5280641, y: 0.18825848, z: 0.0761875}
   - jointId: 12
-    normalizedPosition: {x: -0.08509934, y: 0.004886998, z: -0.06383799}
+    normalizedPosition: {x: -0.15824687, y: 0.016295282, z: -0.03821083}
   - jointId: 13
-    normalizedPosition: {x: -0.04339942, y: -0.37357023, z: -0.36812252}
+    normalizedPosition: {x: -0.3263229, y: -0.6334039, z: -0.29748896}
   - jointId: 14
-    normalizedPosition: {x: -0.04464834, y: -0.9390394, z: -0.4750996}
+    normalizedPosition: {x: -0.52135074, y: -1.1650752, z: -0.29901597}
   - jointId: 15
-    normalizedPosition: {x: 0.07340716, y: -0.90968037, z: -0.63166636}
+    normalizedPosition: {x: -0.5942428, y: -1.1375587, z: -0.5699335}
   - jointId: 16
-    normalizedPosition: {x: 0.08484615, y: 0.004716343, z: -0.046813942}
+    normalizedPosition: {x: 0.15397452, y: 0.011965979, z: -0.09941961}
   - jointId: 17
-    normalizedPosition: {x: 0.17420779, y: -0.32729098, z: 0.038759656}
+    normalizedPosition: {x: 0.20492646, y: -0.6536436, z: -0.1339665}
   - jointId: 18
-    normalizedPosition: {x: -0.1577201, y: -1.0151306, z: -0.056829765}
+    normalizedPosition: {x: 0.17660755, y: -1.3007572, z: -0.04778436}
   - jointId: 19
-    normalizedPosition: {x: -0.07226452, y: -1.0326521, z: -0.22748873}
+    normalizedPosition: {x: 0.13912272, y: -1.3285469, z: -0.26876467}
   - jointId: 20
-    normalizedPosition: {x: -0.07456389, y: 0.9730315, z: 0.21828869}
+    normalizedPosition: {x: 0.056329153, y: 0.94204354, z: 0.33072793}
   - jointId: 21
-    normalizedPosition: {x: 0.28418526, y: 0.45927832, z: 0.15994595}
+    normalizedPosition: {x: -0.3290173, y: 0.046948068, z: -0.07628721}
   - jointId: 22
-    normalizedPosition: {x: 0.2346176, y: 0.4970551, z: 0.053798642}
+    normalizedPosition: {x: -0.3224129, y: 0.22213723, z: 0.007259438}
   - jointId: 23
-    normalizedPosition: {x: -0.18807113, y: 0.3051671, z: -0.1922867}
+    normalizedPosition: {x: 0.46238267, y: 0.12020901, z: -0.014515428}
   - jointId: 24
-    normalizedPosition: {x: -0.18087016, y: 0.4133904, z: -0.16047706}
+    normalizedPosition: {x: 0.5550029, y: 0.1458227, z: 0.04582245}
