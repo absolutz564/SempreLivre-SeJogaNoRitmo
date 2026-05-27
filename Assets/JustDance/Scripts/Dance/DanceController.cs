@@ -27,6 +27,10 @@ public class DanceController : MonoBehaviour
     [Tooltip("Avaliações de pose por segundo")]
     public float evaluationRate = 10f;
 
+    [Header("Debug")]
+    [Tooltip("Ignora rastreamento do Kinect — simula scores aleatórios para testar o fluxo")]
+    public bool mockTracking = false;
+
     [Header("Precisão de Avaliação")]
     [Tooltip("Tolerância padrão de distância por joint — menor = mais rigoroso")]
     public float defaultTolerance = 0.15f;
@@ -67,20 +71,23 @@ public class DanceController : MonoBehaviour
         int players = GameSession.PlayerCount;
 
         // 1. Aguardar Kinect
-        float waitTimer = 0f;
-        while (!KinectBodyTracker.Instance.IsConnected && waitTimer < 5f)
+        if (!mockTracking)
         {
-            waitTimer += Time.deltaTime;
-            hud?.ShowMessage("Conectando Kinect...");
-            yield return null;
-        }
+            float waitTimer = 0f;
+            while (!KinectBodyTracker.Instance.IsConnected && waitTimer < 5f)
+            {
+                waitTimer += Time.deltaTime;
+                hud?.ShowMessage("Conectando Kinect...");
+                yield return null;
+            }
 
-        // 2. Aguardar rastreamento do corpo
-        hud?.HideMessage();
-        hud?.ShowTrackingWait();
-        while (!AllPlayersTracked(players))
-            yield return null;
-        hud?.HideTrackingWait();
+            // 2. Aguardar rastreamento do corpo
+            hud?.HideMessage();
+            hud?.ShowTrackingWait();
+            while (!AllPlayersTracked(players))
+                yield return null;
+            hud?.HideTrackingWait();
+        }
 
         // 3. Preparar HUD e scores
         hud?.SetupForPlayerCount(players);
@@ -88,7 +95,7 @@ public class DanceController : MonoBehaviour
             scoreManagers[p]?.ResetScore();
         for (int p = 0; p < 2; p++) _stepBestScore[p] = 0f;
 
-        // 3. Countdown — prepara o vídeo durante a contagem para evitar stutter
+        // 3. Prepara o vídeo e exibe o primeiro frame antes do countdown
         hud?.ShowMessage("Prepare-se!");
         videoRecorder?.StartRecording();
         if (danceVideoPlayer != null && choreography.videoClip != null)
@@ -97,7 +104,13 @@ public class DanceController : MonoBehaviour
             danceVideoPlayer.playOnAwake = false;
             danceVideoPlayer.isLooping   = false;
             danceVideoPlayer.Prepare();
+            yield return new WaitUntil(() => danceVideoPlayer.isPrepared);
+
+            // Play+Pause renderiza o primeiro frame imediatamente
+            danceVideoPlayer.Play();
+            danceVideoPlayer.Pause();
         }
+
         for (int i = 3; i >= 1; i--)
         {
             hud?.ShowCountdown(i);
@@ -105,11 +118,10 @@ public class DanceController : MonoBehaviour
         }
         hud?.HideCountdown();
 
-        // 4. Inicia vídeo (aguarda preparação se ainda não concluída)
+        // 4. Retoma o vídeo do ponto onde pausou (primeiro frame)
         _gameTimer = 0f;
         if (danceVideoPlayer != null && choreography.videoClip != null)
         {
-            yield return new WaitUntil(() => danceVideoPlayer.isPrepared);
             danceVideoPlayer.Play();
         }
         _isPlaying = true;
@@ -194,15 +206,22 @@ public class DanceController : MonoBehaviour
         int players = GameSession.PlayerCount;
         for (int p = 0; p < players && p < scoreManagers.Length; p++)
         {
-            var joints = KinectBodyTracker.Instance?.GetNormalizedJoints(p);
-            if (joints == null)
+            float score;
+            if (mockTracking)
             {
-                Debug.LogWarning($"[DanceController] J{p + 1}: nenhum joint — Kinect rastreando?");
-                continue;
+                score = Random.Range(0.5f, 1f);
             }
-
-            float score = PoseComparator.Compare(joints, _referenceJoints,
-                                                  _currentEntry.step?.tolerance ?? defaultTolerance);
+            else
+            {
+                var joints = KinectBodyTracker.Instance?.GetNormalizedJoints(p);
+                if (joints == null)
+                {
+                    Debug.LogWarning($"[DanceController] J{p + 1}: nenhum joint — Kinect rastreando?");
+                    continue;
+                }
+                score = PoseComparator.Compare(joints, _referenceJoints,
+                                               _currentEntry.step?.tolerance ?? defaultTolerance);
+            }
 
             Debug.Log($"[DanceController] J{p + 1} '{_currentEntry.step?.stepName}' score={score:F2}");
 
