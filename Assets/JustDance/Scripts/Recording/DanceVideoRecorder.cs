@@ -98,6 +98,7 @@ public class DanceVideoRecorder : MonoBehaviour
         UnityEngine.Debug.Log("[Recorder] Parando gravação...");
 
         ffmpegCapture.StopFfmpeg();
+        webCamStream.Stop();
 
         float timeout = 0f;
         while (ffmpegCapture.IsRunning && timeout < 15f)
@@ -148,7 +149,6 @@ public class DanceVideoRecorder : MonoBehaviour
         if (webCamStream != null)
         {
             webCamStream.Stop();
-            webCamStream.Play(true);
             UnityEngine.Debug.Log("[Recorder] Webcam reiniciada após gravação.");
         }
     }
