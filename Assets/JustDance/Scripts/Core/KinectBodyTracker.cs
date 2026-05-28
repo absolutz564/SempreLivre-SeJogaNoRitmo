@@ -29,6 +29,9 @@ public class KinectBodyTracker : MonoBehaviour
     private readonly Dictionary<JointId, Vector3>[] _bodyJoints =
         new Dictionary<JointId, Vector3>[MaxBodies];
 
+    // Reutilizado a cada frame para evitar alocação
+    private readonly List<long> _detectedUsers = new List<long>();
+
     void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
@@ -48,14 +51,34 @@ public class KinectBodyTracker : MonoBehaviour
 
         IsConnected = true;
 
+        // Coleta todos os corpos detectados
+        _detectedUsers.Clear();
+        for (int i = 0; i < MaxBodies; i++)
+        {
+            if (km.IsUserDetected(i))
+                _detectedUsers.Add(km.GetUserIdByIndex(i));
+        }
+
+        // Ordena por proximidade ao sensor: SpineBase.z menor = mais próximo
+        _detectedUsers.Sort((a, b) =>
+        {
+            float zA = km.IsJointTracked(a, (int)JointId.SpineBase)
+                ? km.GetJointPosition(a, (int)JointId.SpineBase).z
+                : float.MaxValue;
+            float zB = km.IsJointTracked(b, (int)JointId.SpineBase)
+                ? km.GetJointPosition(b, (int)JointId.SpineBase).z
+                : float.MaxValue;
+            return zA.CompareTo(zB);
+        });
+
+        // Atribui os mais próximos aos jogadores ativos
         int track = Mathf.Min(GameSession.PlayerCount, MaxBodies);
         for (int i = 0; i < track; i++)
         {
-            _bodyJoints[i] = km.IsUserDetected(i)
-                ? BuildNormalizedJoints(km, km.GetUserIdByIndex(i))
+            _bodyJoints[i] = i < _detectedUsers.Count
+                ? BuildNormalizedJoints(km, _detectedUsers[i])
                 : null;
         }
-        // Limpa corpos além do necessário
         for (int i = track; i < MaxBodies; i++) _bodyJoints[i] = null;
     }
 
