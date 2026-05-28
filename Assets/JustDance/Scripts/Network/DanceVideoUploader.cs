@@ -47,7 +47,7 @@ public class DanceVideoUploader : MonoBehaviour
     IEnumerator UploadRoutine(string videoFilePath)
     {
         // Mostra preview imediatamente, independente do upload
-        successPanel?.SetActive(true);
+        // successPanel?.SetActive(true);
         PlayPreviewLoop(videoFilePath);
 
         if (string.IsNullOrEmpty(serverUrl) || serverUrl.Contains("SEU_SERVIDOR"))
@@ -121,20 +121,22 @@ public class DanceVideoUploader : MonoBehaviour
 
         if (_previewPlayer != null)
         {
+            _previewPlayer.prepareCompleted -= OnPreviewPrepared;
             _previewPlayer.Stop();
             Destroy(_previewPlayer);
+            _previewPlayer = null;
         }
         if (_previewRT != null)
+        {
             _previewRT.Release();
-
-        _previewRT = new RenderTexture(1080, 1920, 0);
-        videoPreviewImage.texture = _previewRT;
+            _previewRT = null;
+        }
 
         _previewPlayer = gameObject.AddComponent<VideoPlayer>();
         _previewPlayer.playOnAwake  = false;
         _previewPlayer.isLooping    = true;
+        _previewPlayer.renderMode   = VideoRenderMode.RenderTexture;
         _previewPlayer.url          = "file://" + videoPath;
-        _previewPlayer.targetTexture = _previewRT;
 
         if (videoAudioSource != null)
         {
@@ -146,14 +148,26 @@ public class DanceVideoUploader : MonoBehaviour
             _previewPlayer.audioOutputMode = VideoAudioOutputMode.Direct;
         }
 
-        _previewPlayer.Play();
-        Debug.Log($"[Uploader] Preview iniciado: {videoPath}");
+        _previewPlayer.prepareCompleted += OnPreviewPrepared;
+        _previewPlayer.Prepare();
+        Debug.Log($"[Uploader] Preparando preview: {videoPath}");
+    }
+
+    void OnPreviewPrepared(VideoPlayer vp)
+    {
+        if (_previewRT != null) _previewRT.Release();
+        _previewRT = new RenderTexture((int)vp.width, (int)vp.height, 0);
+        vp.targetTexture          = _previewRT;
+        videoPreviewImage.texture = _previewRT;
+        vp.Play();
+        Debug.Log($"[Uploader] Preview iniciado: {(int)vp.width}x{(int)vp.height}");
     }
 
     public void StopPreview()
     {
         if (_previewPlayer != null)
         {
+            _previewPlayer.prepareCompleted -= OnPreviewPrepared;
             _previewPlayer.Stop();
             Destroy(_previewPlayer);
             _previewPlayer = null;

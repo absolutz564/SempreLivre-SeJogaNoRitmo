@@ -12,12 +12,14 @@ public class RawImageRotator : MonoBehaviour
 
     private const string PrefKey = "RawImageRotator_Steps";
 
+    public int CurrentSteps { get; private set; }
+
     void Start()
     {
-        int steps = PlayerPrefs.GetInt(PrefKey, 0);
-        Debug.Log($"[RawImageRotator] Aplicando rotação salva: {steps * angleStep}° ({steps} passo(s))");
+        CurrentSteps = PlayerPrefs.GetInt(PrefKey, 0);
+        Debug.Log($"[RawImageRotator] Aplicando rotação salva: {CurrentSteps * angleStep}° ({CurrentSteps} passo(s))");
 
-        for (int i = 0; i < steps; i++)
+        for (int i = 0; i < CurrentSteps; i++)
             RotateAll();
     }
 
@@ -27,11 +29,11 @@ public class RawImageRotator : MonoBehaviour
         {
             RotateAll();
 
-            int steps = (PlayerPrefs.GetInt(PrefKey, 0) + 1) % 4;
-            PlayerPrefs.SetInt(PrefKey, steps);
+            CurrentSteps = (CurrentSteps + 1) % 4;
+            PlayerPrefs.SetInt(PrefKey, CurrentSteps);
             PlayerPrefs.Save();
 
-            Debug.Log($"[RawImageRotator] Rotação atualizada: {steps * angleStep}° ({steps} passo(s)) — salvo no PlayerPrefs");
+            Debug.Log($"[RawImageRotator] Rotação atualizada: {CurrentSteps * angleStep}° ({CurrentSteps} passo(s)) — salvo no PlayerPrefs");
         }
     }
 

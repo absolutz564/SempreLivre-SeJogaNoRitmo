@@ -95,9 +95,8 @@ public class DanceController : MonoBehaviour
             scoreManagers[p]?.ResetScore();
         for (int p = 0; p < 2; p++) _stepBestScore[p] = 0f;
 
-        // 3. Prepara o vídeo e exibe o primeiro frame antes do countdown
+        // 3. Prepara o vídeo em background durante o countdown (sem Play+Pause para não esconder webcam)
         hud?.ShowMessage("Prepare-se!");
-        videoRecorder?.StartRecording();
         if (danceVideoPlayer != null && choreography.videoClip != null)
         {
             danceVideoPlayer.clip        = choreography.videoClip;
@@ -105,10 +104,6 @@ public class DanceController : MonoBehaviour
             danceVideoPlayer.isLooping   = false;
             danceVideoPlayer.Prepare();
             yield return new WaitUntil(() => danceVideoPlayer.isPrepared);
-
-            // Play+Pause renderiza o primeiro frame imediatamente
-            danceVideoPlayer.Play();
-            danceVideoPlayer.Pause();
         }
 
         for (int i = 3; i >= 1; i--)
@@ -118,7 +113,8 @@ public class DanceController : MonoBehaviour
         }
         hud?.HideCountdown();
 
-        // 4. Retoma o vídeo do ponto onde pausou (primeiro frame)
+        // 4. Inicia gravação e vídeo juntos (após countdown, para não bloquear webcam durante contagem)
+        videoRecorder?.StartRecording();
         _gameTimer = 0f;
         if (danceVideoPlayer != null && choreography.videoClip != null)
         {
